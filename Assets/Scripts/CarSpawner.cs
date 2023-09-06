@@ -13,6 +13,12 @@ public class CarSpawner : MonoBehaviour
 
     void Start()
     {
+        //GenerateBoard();
+        SpawnCars();
+    }
+
+    void SpawnCars()
+    {
         Vector3 currentPosition = startingPoint.position;
 
         for (int col = 0; col < columns; col++)
@@ -38,4 +44,67 @@ public class CarSpawner : MonoBehaviour
             currentPosition.z = startingPoint.position.z; // Reset the z-position
         }
     }
+
+   
 }
+
+/*
+public void GenerateBoard()
+{
+    //BoardSize boardSize = GamePlayUI.Instance.GetBoardSize();
+
+    int rowSize = rows;
+    int columnSize = columns;
+
+    // Fetched the size of block that should be used.
+    float blockSize = 1.5f;// = GamePlayUI.Instance.currentGameMode == GameMode.Level ? gamePlaySettings.globalLevelModeBlockSize : GamePlayUI.Instance.currentModeSettings.blockSize;
+                           // Fetched the space between blocks that should be used.
+    float blockSpace = 1.5f;// GamePlayUI.Instance.currentGameMode == GameMode.Level ? gamePlaySettings.globalLevelModeBlockSpace : GamePlayUI.Instance.currentModeSettings.blockSpace;
+
+    //Set background and design Grid Size and design type
+    //gridBackground.GetComponent<RectTransform>().sizeDelta = new Vector2((rowSize * blockSize) + ((rowSize - 1) * blockSpace) + gridBackgroundOffset, (columnSize * blockSize) + ((columnSize - 1) * blockSpace) + gridBackgroundOffset);
+    //gridDesign.GetComponent<RectTransform>().sizeDelta = new Vector2((rowSize * blockSize) + ((rowSize - 1) * blockSpace) + gridDesignOffset, (columnSize * blockSize) + ((columnSize - 1) * blockSpace) + gridDesignOffset);
+    //gridBorder.GetComponent<RectTransform>().sizeDelta = new Vector2((rowSize * blockSize) + ((rowSize - 1) * blockSpace) + gridBorderOffset, (columnSize * blockSize) + ((columnSize - 1) * blockSpace) + gridBorderOffset);
+    //gridDesign.GetComponent<Image>().sprite = ThemeManager.Instance.GetBlockSpriteWithTag(rowSize.ToString());
+
+    // Starting points represents point from where block shape grid should start inside block shape.
+    float startPointX = GetStartPointX(blockSize, columnSize);
+    float startPointY = GetStartPointZ(blockSize, rowSize);
+
+    // Will keep updating with iterations.
+    float currentPositionX = startPointX;
+    float currentPositionY = startPointY;
+
+    //List<Block> blockRow = new List<Block>();
+
+    for (int column = 0; column < columnSize; column++)
+    {
+        // Spawn a block instance and prepares it.
+        GameObject randomCarPrefab = carPrefabs[Random.Range(0, carPrefabs.Length)];
+
+        // Instantiate the random car at the current position
+        GameObject newCar = Instantiate(randomCarPrefab, Vector3.zero, Quaternion.identity);
+        newCar.transform.localPosition = new Vector3(currentPositionX, 0.5f, currentPositionY);
+        currentPositionX += (blockSize + blockSpace);
+
+        // Sets blocks logical position inside grid and its default sprite.
+    }
+    currentPositionX = startPointX;
+    currentPositionY -= (blockSize + blockSpace);
+
+}
+
+public float GetStartPointX(float blockSize, int rowSize)
+{
+    float blockSpace = 1.5f;// GamePlayUI.Instance.currentGameMode == GameMode.Level ? gamePlaySettings.globalLevelModeBlockSpace : GamePlayUI.Instance.currentModeSettings.blockSpace;
+    float totalWidth = (blockSize * rowSize) + ((rowSize - 1) * blockSpace);
+    return -((totalWidth / 2) - (blockSize / 2));
+}
+
+public float GetStartPointZ(float blockSize, int columnSize)
+{
+    float blockSpace = 1.5f;// GamePlayUI.Instance.currentGameMode == GameMode.Level ? gamePlaySettings.globalLevelModeBlockSpace : GamePlayUI.Instance.currentModeSettings.blockSpace;
+    float totalHeight = (blockSize * columnSize) + ((columnSize - 1) * blockSpace);
+    return ((totalHeight / 2) - (blockSize / 2));
+}
+*/
