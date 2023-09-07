@@ -7,16 +7,6 @@ public class GameManager : MonoBehaviour
     public List<Transform> hookSpawningTransforms;
     public GameObject hook;
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void SpawnHooks()
     {
