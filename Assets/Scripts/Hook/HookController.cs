@@ -47,14 +47,6 @@ public class HookController : MonoBehaviour
                 isreversing = false;
             }
         }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            canMove = true;
-        }
-        else
-        {
-            canMove = false;
-        }
 
         if (canPull)
         {
@@ -64,14 +56,6 @@ public class HookController : MonoBehaviour
                 canPull = false;
             }
         }
-        //if (!isreversing)
-        //{
-        //    transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        //}
-        //else
-        //{
-        //    transform.Translate(-Vector3.forward * speed * 2f * Time.deltaTime);
-        //}
     }
 
     private void FixedUpdate()
