@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7096653931196240766}
   - component: {fileID: -1565717958331440237}
   m_Layer: 0
-  m_Name: LevelOneHook
+  m_Name: LevelEightHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 015822b97bcfc4b4c875bc833f986934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hookLevel: 8
   hookController: {fileID: 7576064806985044728}
-  hookLevel: 1
 --- !u!65 &-1565717958331440237
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -108,10 +108,10 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7576064806962280539}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 1.5}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7576064806985044734
 GameObject:
@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookLevel: 0
-  hookBase: {fileID: 7576064806962280516}
   canMove: 0
   speed: 0
   isreversing: 0
@@ -223,6 +222,7 @@ MonoBehaviour:
   pullDone: 0
   initialPosition: {x: 0, y: 0, z: 0}
   damage: 0
+  hookBase: {fileID: 7576064806962280516}
 --- !u!120 &7576064806985044708
 LineRenderer:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+/// <summary>
+/// Enum for the Hook level
+/// </summary>
 public enum HookLevel
 {
     None,

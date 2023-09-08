@@ -2,24 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Actual Hook Controller attached on the hook gameobject 
+/// will move forward on button click and break the cars and collect them
+/// </summary>
 public class HookController : MonoBehaviour
 {
+    #region Public fields
     public HookLevel hookLevel;
-    private LineRenderer lineRenderer;
-    [SerializeField] private Transform hookBase;
     public bool canMove;
     public float speed = 5.0f;
     public bool isreversing = false;
     public float timer;
     public float duration;
-    private Rigidbody rb;
-    int count = 0;
-
     public bool canPull;
     public bool pullDone;
-
     public Vector3 initialPosition;
     public int damage;
+    #endregion
+
+    #region Private Components
+    private LineRenderer lineRenderer;
+    private Rigidbody rb;
+    #endregion
+
+    [SerializeField] private Transform hookBase;
+    int count = 0;
 
     private void Awake()
     {
@@ -36,13 +45,9 @@ public class HookController : MonoBehaviour
     {
         if (isreversing)
         {
-            // Increment the timer while the boolean is true
             timer += Time.deltaTime;
-
-            // Check if the timer has exceeded the specified duration
             if (timer >= duration)
             {
-                // Reset the timer and set the boolean to false
                 timer = 0.0f;
                 isreversing = false;
             }
@@ -71,18 +76,6 @@ public class HookController : MonoBehaviour
                 rb.velocity = -transform.forward * speed * Time.fixedDeltaTime;
             }
         }
-        else
-        {
-
-        }
-        //if (!isreversing)
-        //{
-        //    rb.velocity = new Vector3(0, 0, speed * Time.fixedDeltaTime);
-        //}
-        //else
-        //{
-        //    rb.velocity = new Vector3(0, 0, -speed * Time.fixedDeltaTime);
-        //}
     }
 
 
