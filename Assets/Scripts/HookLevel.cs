@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum HookLevel
 {
+    None,
     ONE,
     TWO,
     THREE,

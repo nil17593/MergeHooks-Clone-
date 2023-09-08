@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hookController: {fileID: 7576064806985044728}
-  hookLevel: 0
+  hookLevel: 1
 --- !u!65 &-1565717958331440237
 BoxCollider:
   m_ObjectHideFlags: 0

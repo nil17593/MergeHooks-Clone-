@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
             HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
             hookBase.thisHookContainer = hookContainer;
             hookContainer.isOccupied = true;
+            hookContainer.levelText.text = ""+ ((int)hookBase.hookLevel);
             activeHooks.Add(hookBase);
         }
     }
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
             case HookLevel.TWO:
                 HookBase hook2 = Instantiate(hooks[1], pos, Quaternion.identity, parent.transform);
                 hook2.thisHookContainer = parent;
+                parent.levelText.text = "" + ((int)hook2.hookLevel);
                 activeHooks.Add(hook2);
                 parent.isOccupied = true;
                 break;
@@ -54,6 +56,7 @@ public class GameManager : MonoBehaviour
                 HookBase hook3 = Instantiate(hooks[2], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook3);
                 hook3.thisHookContainer = parent;
+                parent.levelText.text = "" + ((int)hook3.hookLevel);
                 parent.isOccupied = true;
                 break;
 
@@ -61,6 +64,7 @@ public class GameManager : MonoBehaviour
                 HookBase hook4 = Instantiate(hooks[3], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook4);
                 hook4.thisHookContainer = parent;
+                parent.levelText.text = "" + ((int)hook4.hookLevel);
                 parent.isOccupied = true;
                 break;
 
@@ -68,6 +72,7 @@ public class GameManager : MonoBehaviour
                 HookBase hook5 = Instantiate(hooks[4], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook5);
                 hook5.thisHookContainer = parent;
+                parent.levelText.text = ""+((int)hook5.hookLevel);
                 parent.isOccupied = true;
                 break;
         }

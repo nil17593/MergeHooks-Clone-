@@ -4,23 +4,9 @@ using UnityEngine;
 
 public class HookBase : MonoBehaviour
 {
-    //public enum HookLevel
-    //{
-    //    ONE = 10,
-    //    TWO = 20,
-    //    THREE = 30,
-    //    FOUR = 40,
-    //    FIVE = 50,
-    //    SIX,
-    //    SEVEN,
-    //    EIGHT,
-    //    NINE,
-    //    TEN,
-    //    ELEVEN,
-    //}
-
     [SerializeField] private HookController hookController;
-    [System.NonSerialized]public HookContainer thisHookContainer;
+    [System.NonSerialized] public HookContainer thisHookContainer;
+
     public HookLevel hookLevel;
     private bool isDragging = false;
     private Vector3 offset;
@@ -31,6 +17,7 @@ public class HookBase : MonoBehaviour
     {
         initialPos = transform.position;
     }
+
     private void OnMouseDown()
     {
         foreach (HookBase hook in GameManager.Instance.activeHooks)
@@ -45,6 +32,11 @@ public class HookBase : MonoBehaviour
         }
         offset = transform.position - GetMouseWorldPos();
         isDragging = true;
+    }
+
+    public void SetCurrentPosition(Vector3 pos)
+    {
+        initialPos = pos;
     }
 
     private void OnMouseUp()
@@ -72,30 +64,44 @@ public class HookBase : MonoBehaviour
             HookBase otherHook = collider.GetComponent<HookBase>();
             HookContainer hookContainer = collider.GetComponent<HookContainer>();
 
-            if(hookContainer!=null && !hookContainer.isOccupied)
-            {
-                thisHookContainer.isOccupied = true;
-                transform.position = hookContainer.transform.position;
-            }
 
             if (otherHook != null && otherHook != this && otherHook.hookLevel == this.hookLevel)
             {
                 MergeHooks(otherHook);
                 break;
             }
-            else if (otherHook == null)
-            {
-                transform.position = initialPos;
-            }
             else if (otherHook != null && otherHook != this && otherHook.hookLevel != this.hookLevel)
             {
-                Vector3 otherHooksPos = otherHook.transform.position;
-                Vector3 thisHooksPos = transform.position;
+
+                Vector3 otherHooksPos = otherHook.thisHookContainer.transform.position + new Vector3(0, 0.8f, 0);
+                Vector3 thisHooksPos = thisHookContainer.transform.position + new Vector3(0, 0.8f, 0);
+                HookContainer hookContainerForThisHook = otherHook.thisHookContainer;
+                HookContainer hookContainerForOtherHook = thisHookContainer;
+
                 otherHook.transform.position = thisHooksPos;
-                otherHook.thisHookContainer = this.thisHookContainer;
+                otherHook.thisHookContainer = hookContainerForOtherHook;
+                otherHook.transform.SetParent(hookContainerForOtherHook.transform);
+                otherHook.SetCurrentPosition(otherHook.transform.position);
+
                 transform.position = otherHooksPos;
-                this.thisHookContainer = otherHook.thisHookContainer;
-                otherHook.thisHookContainer.isOccupied = true;
+                thisHookContainer = hookContainerForThisHook;
+                transform.SetParent(hookContainerForThisHook.transform);
+
+                initialPos = transform.position;
+            }
+            else if (hookContainer != null && !hookContainer.isOccupied)
+            {
+                hookContainer.isOccupied = true;
+                thisHookContainer.isOccupied = false;
+                thisHookContainer = hookContainer;
+                transform.position = hookContainer.transform.position + new Vector3(0, 0.8f, 0);
+                transform.SetParent(hookContainer.transform);
+                initialPos = transform.position;
+            }
+            else
+            {
+                Debug.Log("ESEDD");
+                transform.position = initialPos;
             }
         }
     }

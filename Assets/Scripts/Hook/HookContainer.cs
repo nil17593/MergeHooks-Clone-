@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class HookContainer : MonoBehaviour
 {
@@ -10,6 +9,9 @@ public class HookContainer : MonoBehaviour
     private MeshRenderer meshRenderer;
     private Color defaultColor;
     private Material material;
+    private HookBase hookBase;
+    public TextMeshProUGUI levelText;
+
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
