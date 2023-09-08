@@ -2,33 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// Gamemanager class handles spawning of Hooks and holds the list of HookContainers
-/// 
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance;
-
     #region public lists and arrays
     public List<HookBase> activeHooks = new List<HookBase>();
     public List<HookContainer> hookContainers = new List<HookContainer>();
     public HookBase[] hooks;
+    public List<HookController> hookControllers = new List<HookController>();
+    public GameObject buttonPanel;
     #endregion
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-;    }
+    #region Public booleans
+    public bool isHooksMoving;
+    #endregion
 
     #region Spawning of Hooks 
     //Spawn hooks on every button click for now there will be always level1 hook will instantiate
@@ -42,6 +31,7 @@ public class GameManager : MonoBehaviour
             hookContainer.isOccupied = true;
             hookContainer.ActivateDeactivateLevelText(true);
             hookContainer.levelText.text = ""+ ((int)hookBase.hookLevel);
+            hookBase.SetHookControllerLevel(HookLevel.ONE);
             activeHooks.Add(hookBase);
         }
     }
@@ -88,6 +78,7 @@ public class GameManager : MonoBehaviour
                 parent.levelText.text = "" + ((int)hook2.hookLevel);
                 activeHooks.Add(hook2);
                 parent.isOccupied = true;
+                hook2.SetHookControllerLevel(HookLevel.TWO);
                 break;
 
             case HookLevel.THREE:
@@ -96,6 +87,7 @@ public class GameManager : MonoBehaviour
                 hook3.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook3.hookLevel);
                 parent.isOccupied = true;
+                hook3.SetHookControllerLevel(HookLevel.THREE);
                 break;
 
             case HookLevel.FOUR:
@@ -104,6 +96,7 @@ public class GameManager : MonoBehaviour
                 hook4.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook4.hookLevel);
                 parent.isOccupied = true;
+                hook4.SetHookControllerLevel(HookLevel.FOUR);
                 break;
 
             case HookLevel.FIVE:
@@ -112,6 +105,7 @@ public class GameManager : MonoBehaviour
                 hook5.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook5.hookLevel);
                 parent.isOccupied = true;
+                hook5.SetHookControllerLevel(HookLevel.FIVE);
                 break;
 
             case HookLevel.SIX:
@@ -120,6 +114,7 @@ public class GameManager : MonoBehaviour
                 hook6.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook6.hookLevel);
                 parent.isOccupied = true;
+                hook6.SetHookControllerLevel(HookLevel.SIX);
                 break;
 
             case HookLevel.SEVEN:
@@ -128,6 +123,7 @@ public class GameManager : MonoBehaviour
                 hook7.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook7.hookLevel);
                 parent.isOccupied = true;
+                hook7.SetHookControllerLevel(HookLevel.SEVEN);
                 break;
 
             case HookLevel.EIGHT:
@@ -136,6 +132,7 @@ public class GameManager : MonoBehaviour
                 hook8.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook8.hookLevel);
                 parent.isOccupied = true;
+                hook8.SetHookControllerLevel(HookLevel.EIGHT);
                 break;
 
             case HookLevel.NINE:
@@ -144,6 +141,7 @@ public class GameManager : MonoBehaviour
                 hook9.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook9.hookLevel);
                 parent.isOccupied = true;
+                hook9.SetHookControllerLevel(HookLevel.NINE);
                 break;
 
             case HookLevel.TEN:
@@ -152,6 +150,7 @@ public class GameManager : MonoBehaviour
                 hook10.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook10.hookLevel);
                 parent.isOccupied = true;
+                hook10.SetHookControllerLevel(HookLevel.TEN);
                 break;
 
             case HookLevel.ELEVEN:
@@ -160,8 +159,42 @@ public class GameManager : MonoBehaviour
                 hook11.thisHookContainer = parent;
                 parent.levelText.text = "" + ((int)hook11.hookLevel);
                 parent.isOccupied = true;
+                hook11.SetHookControllerLevel(HookLevel.ELEVEN);
+                break;
+
+            default:
+                hookLevel = HookLevel.None;
                 break;
         }
     }
     #endregion
+
+
+    public void CheckFirstHook()
+    {
+        if (hookControllers.Count <= 0)
+            return;
+        for(int i = 0; i < hookControllers.Count-1; i++)
+        {
+            if (hookControllers[i].count > hookControllers[i + 1].count)
+            {
+                FollowCamera.Instance.target = hookControllers[i].transform;
+            }
+        }
+        //foreach(HookController hookController in hookControllers)
+        //{
+        //    if()
+        //}
+    }
+
+    public void OnThrowTheHooksButtonPressed()
+    {
+        buttonPanel.SetActive(false);
+        isHooksMoving = true;
+        foreach(HookBase hookBase in activeHooks)
+        {
+            hookBase.ThrowTheHooks();
+            hookControllers.Add(hookBase.hookController);
+        }
+    }
 }

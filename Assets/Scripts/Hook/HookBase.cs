@@ -16,7 +16,7 @@ public class HookBase : MonoBehaviour
     #endregion
 
     #region Serialized fields
-    [SerializeField] private HookController hookController;
+    public HookController hookController;
     #endregion
 
     #region private properties
@@ -36,6 +36,8 @@ public class HookBase : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.isHooksMoving)
+            return;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hitInfo))
@@ -87,20 +89,7 @@ public class HookBase : MonoBehaviour
             targetPos.y = 1f;
             transform.position = targetPos;
         }
-
-
     }
-
-    #region Input Methods
-    //private void OnMouseDown()
-    //{
-
-    //}
-
-    //private void OnMouseUp()
-    //{
-
-    //}
 
     //returns the mouse position
     private Vector3 GetMouseWorldPos()
@@ -112,14 +101,22 @@ public class HookBase : MonoBehaviour
         }
         return Vector3.zero;
     }
-    #endregion
+
 
     //Sets the current position of Hook in case when we fail to merge or swap the hook will take its original place
     public void SetCurrentPosition(Vector3 pos)
     {
         initialPos = pos;
     }
+    public void SetHookControllerLevel(HookLevel _hookLevel)
+    {
+        hookController.hookLevel = _hookLevel;
+    }
 
+    public void ThrowTheHooks()
+    {
+        hookController.canThrow = true;
+    }
 
     #region Hook Merging 
     private void CheckForHookMerging()
@@ -151,12 +148,14 @@ public class HookBase : MonoBehaviour
                 otherHook.transform.SetParent(hookContainerForOtherHook.transform);
                 otherHook.SetCurrentPosition(otherHook.transform.position);
                 otherHook.thisHookContainer.levelText.text = "" + (int)otherHook.hookLevel;
+                otherHook.hookController.hookLevel = otherHook.hookLevel;
 
                 //this hook settings
                 transform.position = otherHooksPos;
                 thisHookContainer = hookContainerForThisHook;
                 transform.SetParent(hookContainerForThisHook.transform);
                 thisHookContainer.levelText.text = "" + (int)hookLevel;
+                hookController.hookLevel = hookLevel;
                 initialPos = transform.position;
             }
             else if (hittingHookContainer != null && !hittingHookContainer.isOccupied)// if we change the position of the hook
@@ -169,6 +168,7 @@ public class HookBase : MonoBehaviour
                 transform.SetParent(hittingHookContainer.transform);
                 initialPos = transform.position;
                 thisHookContainer.levelText.text = "" + (int)hookLevel;
+                hookController.hookLevel = hookLevel;
                 thisHookContainer.ActivateDeactivateLevelText(true);
             }
             else // if the hook is not collide with anything

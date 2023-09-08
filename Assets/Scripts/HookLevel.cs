@@ -16,3 +16,11 @@ public enum HookLevel
     TEN,
     ELEVEN,
 }
+
+public enum HookState
+{
+    None,
+    MovingForward,
+    MovingBackward,
+    Pulling,
+}
