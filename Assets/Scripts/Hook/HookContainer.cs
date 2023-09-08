@@ -17,7 +17,7 @@ public class HookContainer : MonoBehaviour
         defaultColor = material.color;
     }
 
-    public void ChangeMaterialColor()
+    public void ChangeColor()
     {
         material.color = Color.green;
     }
@@ -26,5 +26,4 @@ public class HookContainer : MonoBehaviour
     {
         material.color = defaultColor;
     }
-
 }

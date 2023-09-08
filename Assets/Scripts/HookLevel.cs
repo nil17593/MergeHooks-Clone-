@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum HookLevel
 {
-    ONE=10,
-    TWO=20,
-    THREE=30,
-    FOUR=40,
-    FIVE=50,
+    ONE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
     SIX,
     SEVEN,
     EIGHT,

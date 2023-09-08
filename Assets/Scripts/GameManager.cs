@@ -6,10 +6,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public List<GameObject> hookSpawningTransforms = new List<GameObject>();
+    public List<GameObject> hookContainer = new List<GameObject>();
     public List<HookBase> activeHooks = new List<HookBase>();
     public List<HookContainer> hookContainers = new List<HookContainer>();
     public HookBase hook;
+    public HookBase levelTwoHook;
+    public HookBase levelThreeHook;
+    public HookBase[] hooks;
 
     private void Awake()
     {
@@ -22,17 +25,51 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
+;    }
 
     public void SpawnHooks()
     {
-        if (hookSpawningTransforms.Count > 0 && activeHooks.Count < hookSpawningTransforms.Count)
+        if (hookContainers.Count > 0 && activeHooks.Count < hookContainers.Count)
         {
             HookContainer hookContainer = GetRandomHookContainer();
-            HookBase hookBase = Instantiate(hook, hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
+            HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
             hookBase.thisHookContainer = hookContainer;
             hookContainer.isOccupied = true;
             activeHooks.Add(hookBase);
+        }
+    }
+
+    public void AddMergedHook(HookLevel hookLevel,Vector3 pos,HookContainer parent)
+    {
+        switch (hookLevel)
+        {
+            case HookLevel.TWO:
+                HookBase hook2 = Instantiate(hooks[1], pos, Quaternion.identity, parent.transform);
+                hook2.thisHookContainer = parent;
+                activeHooks.Add(hook2);
+                parent.isOccupied = true;
+                break;
+
+            case HookLevel.THREE:
+                HookBase hook3 = Instantiate(hooks[2], pos, Quaternion.identity, parent.transform);
+                activeHooks.Add(hook3);
+                hook3.thisHookContainer = parent;
+                parent.isOccupied = true;
+                break;
+
+            case HookLevel.FOUR:
+                HookBase hook4 = Instantiate(hooks[3], pos, Quaternion.identity, parent.transform);
+                activeHooks.Add(hook4);
+                hook4.thisHookContainer = parent;
+                parent.isOccupied = true;
+                break;
+
+            case HookLevel.FIVE:
+                HookBase hook5 = Instantiate(hooks[4], pos, Quaternion.identity, parent.transform);
+                activeHooks.Add(hook5);
+                hook5.thisHookContainer = parent;
+                parent.isOccupied = true;
+                break;
         }
     }
 
@@ -55,25 +92,12 @@ public class GameManager : MonoBehaviour
 
         if (containers.Count > 0)
         {
-            return containers[0]; // Return the first (randomized) unoccupied HookContainer
+            return containers[0];
         }
         else
         {
-            return null; // Handle the case where all HookContainers are occupied
+            return null;
         }
 
     }
-
-    //public static void Shuffle<T>(this IList<T> list)
-    //{
-    //    int n = list.Count;
-    //    while (n > 1)
-    //    {
-    //        n--;
-    //        int k = Random.Range(0, n + 1);
-    //        T value = list[k];
-    //        list[k] = list[n];
-    //        list[n] = value;
-    //    }
-    //}
 }

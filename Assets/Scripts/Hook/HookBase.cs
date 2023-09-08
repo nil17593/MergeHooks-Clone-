@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class HookBase : MonoBehaviour
 {
-    public enum HookLevel
-    {
-        ONE = 10,
-        TWO = 20,
-        THREE = 30,
-        FOUR = 40,
-        FIVE = 50,
-        SIX,
-        SEVEN,
-        EIGHT,
-        NINE,
-        TEN,
-        ELEVEN,
-    }
+    //public enum HookLevel
+    //{
+    //    ONE = 10,
+    //    TWO = 20,
+    //    THREE = 30,
+    //    FOUR = 40,
+    //    FIVE = 50,
+    //    SIX,
+    //    SEVEN,
+    //    EIGHT,
+    //    NINE,
+    //    TEN,
+    //    ELEVEN,
+    //}
 
     [SerializeField] private HookController hookController;
     [System.NonSerialized]public HookContainer thisHookContainer;
@@ -25,6 +25,7 @@ public class HookBase : MonoBehaviour
     private bool isDragging = false;
     private Vector3 offset;
     private Vector3 initialPos;
+    private int currentEnumIndex = 0;
 
     private void Start()
     {
@@ -32,16 +33,14 @@ public class HookBase : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        // Calculate the offset between the mouse position and the object's position
         foreach (HookBase hook in GameManager.Instance.activeHooks)
         {
             if (hook.hookLevel == this.hookLevel)
             {
                 if (hook.thisHookContainer != thisHookContainer)
                 {
-                    hook.thisHookContainer.ChangeMaterialColor();
+                    hook.thisHookContainer.ChangeColor();
                 }
-                //hook.GetComponentInParent<Renderer>().material.color = Color.green;
             }
         }
         offset = transform.position - GetMouseWorldPos();
@@ -59,7 +58,6 @@ public class HookBase : MonoBehaviour
                 {
                     hook.thisHookContainer.ResetColor();
                 }
-                //hook.GetComponentInParent<Renderer>().material.color = Color.green;
             }
         }
         CheckForHookMerging();
@@ -67,34 +65,45 @@ public class HookBase : MonoBehaviour
 
     private void CheckForHookMerging()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 1f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
 
         foreach (var collider in colliders)
         {
             HookBase otherHook = collider.GetComponent<HookBase>();
+            HookContainer hookContainer = collider.GetComponent<HookContainer>();
+
+            if(hookContainer!=null && !hookContainer.isOccupied)
+            {
+                thisHookContainer.isOccupied = true;
+                transform.position = hookContainer.transform.position;
+            }
 
             if (otherHook != null && otherHook != this && otherHook.hookLevel == this.hookLevel)
             {
                 MergeHooks(otherHook);
-                break; // You can break the loop after merging the first hook found.
+                break;
             }
-            else
+            else if (otherHook == null)
             {
                 transform.position = initialPos;
+            }
+            else if (otherHook != null && otherHook != this && otherHook.hookLevel != this.hookLevel)
+            {
+                Vector3 otherHooksPos = otherHook.transform.position;
+                Vector3 thisHooksPos = transform.position;
+                otherHook.transform.position = thisHooksPos;
+                otherHook.thisHookContainer = this.thisHookContainer;
+                transform.position = otherHooksPos;
+                this.thisHookContainer = otherHook.thisHookContainer;
+                otherHook.thisHookContainer.isOccupied = true;
             }
         }
     }
 
     private void MergeHooks(HookBase otherHook)
     {
-        // Implement your logic to merge the hooks here.
-        // For example, you can destroy one of the hooks and update the properties of the other.
-
-        // Destroy the other hook (you can customize this logic)
-        transform.position = otherHook.transform.position;
-        transform.SetParent(otherHook.thisHookContainer.transform);
         thisHookContainer.isOccupied = false;
-        otherHook.thisHookContainer.isOccupied = false;
+
         if (GameManager.Instance.activeHooks.Contains(this))
         {
             GameManager.Instance.activeHooks.Remove(this);
@@ -103,37 +112,34 @@ public class HookBase : MonoBehaviour
         {
             GameManager.Instance.activeHooks.Remove(otherHook);
         }
+
+        
+        currentEnumIndex = (int)hookLevel;
+        currentEnumIndex = (currentEnumIndex + 1) % System.Enum.GetValues(typeof(HookLevel)).Length;
+        HookLevel hook;
+        hook = (HookLevel)currentEnumIndex;
+        if (((int)hook) < GameManager.Instance.hooks.Length)
+        {
+            GameManager.Instance.AddMergedHook(hook, otherHook.transform.position, otherHook.thisHookContainer);
+        }
         Destroy(otherHook.gameObject);
         Destroy(gameObject);
-
-        // Update the properties of this hook if needed
-        // For example, increase hookLevel or change appearance
-        hookLevel += 10;
-
-        // You can update any other properties or behaviors as required for your game.
     }
-
-    //private bool TryToMergeHook(HookBase hook)
-    //{
-
-    //}
 
     private Vector3 GetMouseWorldPos()
     {
-        // Get the mouse position in world coordinates
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             return hit.point;
         }
-        return Vector3.zero; // Return (0,0,0) if the raycast doesn't hit anything
+        return Vector3.zero;
     }
 
     private void Update()
     {
         if (isDragging)
         {
-            // Update the object's position based on the mouse movement
             Vector3 targetPos = GetMouseWorldPos() + offset;
             targetPos.y = 1f;
             transform.position = targetPos;
