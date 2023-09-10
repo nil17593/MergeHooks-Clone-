@@ -116,7 +116,10 @@ public class HookBase : MonoBehaviour
 
     public void ThrowTheHooks()
     {
+        hookController.SetInitialPosition(hookController.transform.position);
         hookController.canThrow = true;
+        hookController.isReached = false;
+        hookController.canPull = false;
     }
 
     #region Hook Merging 
@@ -150,7 +153,7 @@ public class HookBase : MonoBehaviour
                 otherHook.SetCurrentPosition(otherHook.transform.position);
                 otherHook.thisHookContainer.levelText.text = "" + (int)otherHook.hookLevel;
                 otherHook.hookController.hookLevel = otherHook.hookLevel;
-
+                //otherHook.hookController.SetInitialPosition(otherHook.hookController.transform.position);
                 //this hook settings
                 transform.position = otherHooksPos;
                 thisHookContainer = hookContainerForThisHook;
@@ -158,6 +161,7 @@ public class HookBase : MonoBehaviour
                 thisHookContainer.levelText.text = "" + (int)hookLevel;
                 hookController.hookLevel = hookLevel;
                 initialPos = transform.position;
+                //hookController.SetInitialPosition(hookController.transform.position);
             }
             else if (hittingHookContainer != null && !hittingHookContainer.isOccupied)// if we change the position of the hook
             {
@@ -171,6 +175,7 @@ public class HookBase : MonoBehaviour
                 thisHookContainer.levelText.text = "" + (int)hookLevel;
                 hookController.hookLevel = hookLevel;
                 thisHookContainer.ActivateDeactivateLevelText(true);
+                //hookController.SetInitialPosition(hookController.transform.position);
             }
             else // if the hook is not collide with anything
             {
@@ -193,7 +198,17 @@ public class HookBase : MonoBehaviour
             GameManager.Instance.activeHooks.Remove(otherHook);
         }
 
-        
+
+        if (FollowCamera.Instance.hooks.Contains(this.transform))
+        {
+            FollowCamera.Instance.hooks.Remove(this.transform);
+        }
+        if (FollowCamera.Instance.hooks.Contains(otherHook.transform))
+        {
+            FollowCamera.Instance.hooks.Remove(otherHook.transform);
+        }
+
+
         currentEnumIndex = (int)hookLevel;
         currentEnumIndex = (currentEnumIndex + 1) % System.Enum.GetValues(typeof(HookLevel)).Length;
         HookLevel hook;

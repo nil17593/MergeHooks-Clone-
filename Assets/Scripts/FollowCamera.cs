@@ -21,15 +21,15 @@ public class FollowCamera : Singleton<FollowCamera>
         if (GameManager.Instance.presentGameState == GameManager.GameState.Throwing)
         {
             // Find the closest GameObject to the camera's current position
-            Transform closestObject = hooks[0];
+            Transform closestObject = GameManager.Instance.hookControllers[0].transform;
             float closestDistance = Mathf.Abs(transform.position.z - closestObject.position.z);
 
-            foreach (Transform go in hooks)
+            foreach (HookController go in GameManager.Instance.hookControllers)
             {
-                float distance = Mathf.Abs(transform.position.z - go.position.z);
+                float distance = Mathf.Abs(transform.position.z - go.transform.position.z);
                 if (distance < closestDistance)
                 {
-                    closestObject = go;
+                    closestObject = go.transform;
                     closestDistance = distance;
                 }
             }

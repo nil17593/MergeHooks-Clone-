@@ -46,12 +46,18 @@ public class GameManager : Singleton<GameManager>
         if (presentGameState == GameState.Merging)
         {
             canHandleTouch = true;
-            buttonPanel.SetActive(true);
+            if (!buttonPanel.activeSelf)
+            {
+                buttonPanel.SetActive(true);
+            }
         }
         else if (presentGameState == GameState.Throwing)
         {
             canHandleTouch = false;
-            buttonPanel.SetActive(false);
+            if (buttonPanel.activeSelf)
+            {
+                buttonPanel.SetActive(false);
+            }
         }
         else if (presentGameState == GameState.Pulling)
         {
@@ -239,19 +245,6 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-
-    //public void CheckFirstHook()
-    //{
-    //    if (hookControllers.Count <= 0)
-    //        return;
-    //    for(int i = 0; i < hookControllers.Count-1; i++)
-    //    {
-    //        if (hookControllers[i].count > hookControllers[i + 1].count)
-    //        {
-    //            FollowCamera.Instance.target = hookControllers[i].transform;
-    //        }
-    //    }
-    //}
     public bool CanStartTopull()
     {
         foreach (HookController hook in hookControllers)
@@ -277,11 +270,9 @@ public class GameManager : Singleton<GameManager>
         {
             hook.canPull = true;
         }
-        //presentGameState = GameState.Merging;
         if (carControllers.Count <= 0)
         {
-            Debug.Log("Ho gaya");
-            presentGameState = GameState.Merging;
+            presentGameState = GameState.Merging;   
             yield break;
         }
     }

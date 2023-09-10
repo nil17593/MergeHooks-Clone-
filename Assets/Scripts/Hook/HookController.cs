@@ -48,8 +48,7 @@ public class HookController : MonoBehaviour
     }
 
     private void Start()
-    {
-        initialPos = transform.position;
+    {        
         SetDamageBasedOnHookLevel(hookLevel);
         initialPosition = transform.position;
     }
@@ -162,10 +161,12 @@ public class HookController : MonoBehaviour
         lineRenderer.SetPosition(0, hookBase.position);
     }
 
-    public void OnTrowButtonPressed()
-    {
-        canMove = true;
-    }
+    //public void OnTrowButtonPressed()
+    //{
+    //    initialPos = transform.position;
+    //    Debug.Log("pos" + initialPos);
+    //    canMove = true;
+    //}
 
     private void OnCollisionEnter(Collision collider)
     {
@@ -181,15 +182,10 @@ public class HookController : MonoBehaviour
             {
                 isreversing = true;
             }
-            else
-            {
-                count += 1;
-            }
 
             if (health <= 0)
             {
                 isReached=true;
-
                 if (GameManager.Instance.CanStartTopull())
                 {
                     Debug.Log("ASDD");
@@ -205,11 +201,34 @@ public class HookController : MonoBehaviour
                 //}
             }
         }
+
+        if (collider.gameObject.CompareTag("Gift"))
+        {
+            Debug.Log("AYYA");
+            isReached = true;
+            if (GameManager.Instance.CanStartTopull())
+            {
+                Debug.Log("ASDD");
+                GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
+            }
+        }
     }
+
+    public void ResetGame()
+    {
+        health = 100;
+    }
+
+    public void SetInitialPosition(Vector3 pos)
+    {
+        initialPos = pos;
+    }
+
 
     public void ReturnToBase()
     {
         Vector3 newPosition = Vector3.MoveTowards(transform.position, initialPos, 10f * Time.deltaTime);
         transform.position = newPosition;
+        ResetGame();
     }
 }

@@ -6,41 +6,80 @@ using UnityEngine;
 /// <summary>
 /// Car spawner instantiates the cars dynamically just we have to give the start point
 /// </summary>
-public class CarSpawner : MonoBehaviour
+public class CarSpawner : Singleton<CarSpawner>
 {
-    public GameObject[] carPrefabs;
-    public int rows = 4;
-    public int columns = 8;
-    public float spacing = 1f;
-    public float forwardDistance = 1f;
-    public Transform startingPoint;
+    [SerializeField] private List<GameObject> carPrefabs;
+    [SerializeField] private int numRows = 8;
+    [SerializeField] private int numColumns = 5;
+    [SerializeField] private float xSpacing = 1.0f;
+    [SerializeField] private Transform startingPoint;
+    [SerializeField] private float rowSpacing = 1.0f;
+    [SerializeField] private List<GameObject> giftPrefabs;
+    private float[] maxZSizeInColumn;
+    private List<GameObject> carsOnGrid = new List<GameObject>();
 
     void Start()
     {
         SpawnCars();
     }
 
-    //spawning of different type of cars
-    void SpawnCars()
+    // Helper function to get the size of a game object along the Z-axis
+    float GetZSizeOfObject(GameObject obj)
     {
-        Vector3 currentPosition = startingPoint.position;
-
-        for (int col = 0; col < columns; col++)
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
         {
-            for (int row = 0; row < rows; row++)
-            {
-                GameObject randomCarPrefab = carPrefabs[Random.Range(0, carPrefabs.Length)];
-
-                GameObject newCar = Instantiate(randomCarPrefab, currentPosition, Quaternion.identity);
-
-                float carZScale = newCar.transform.localScale.z;
-                float zSpacing = spacing * carZScale;
-
-                currentPosition.z += zSpacing;
-            }
-            currentPosition.x += spacing;
-            currentPosition.z = startingPoint.position.z;
+            return renderer.bounds.size.z;
         }
+        return 0f;
+    }
+
+    public void SpawnCars()
+    {
+        maxZSizeInColumn = new float[numColumns];
+        float currentX = startingPoint.position.x;
+        float currentZ = startingPoint.position.z;
+
+        for (int row = 0; row < numRows; row++)
+        {
+            for (int col = 0; col < numColumns; col++)
+            {
+                int prefabIndex = Random.Range(0, carPrefabs.Count);
+                GameObject car = Instantiate(carPrefabs[prefabIndex], new Vector3(currentX, 0.8f, currentZ), Quaternion.identity);
+                float zSize = GetZSizeOfObject(car);
+                maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                currentX += xSpacing;
+                carsOnGrid.Add(car);
+            }
+
+            float maxZSize = Mathf.Max(maxZSizeInColumn);
+            currentX = startingPoint.position.x;
+            currentZ += maxZSize + xSpacing;
+        }
+
+        float additionalRowStartZ = currentZ + rowSpacing;
+
+        for (int col = 0; col < numColumns; col++)
+        {
+            int prefabIndex = col % giftPrefabs.Count;
+
+            GameObject instantiatedPrefab = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, 0.8f, additionalRowStartZ), Quaternion.identity);
+
+            currentX += xSpacing;
+        }
+    }
+
+    public void ResetGame()
+    {
+        foreach(GameObject car in carsOnGrid)
+        {
+            carsOnGrid.Remove(car);
+            Destroy(car);
+        }
+
+        carsOnGrid.Clear();
+
+        SpawnCars();
     }
 }
 
