@@ -8,12 +8,12 @@ using UnityEngine;
 /// </summary>
 public class CarSpawner : MonoBehaviour
 {
-    public GameObject[] carPrefabs; // Array of car prefabs with varying sizes
+    public GameObject[] carPrefabs;
     public int rows = 4;
     public int columns = 8;
-    public float spacing = 1f; // Distance between cars (X axis)
-    public float forwardDistance = 1f; // Distance to move forward before instantiating the next row
-    public Transform startingPoint; // Specify the starting point in the Unity Inspector
+    public float spacing = 1f;
+    public float forwardDistance = 1f;
+    public Transform startingPoint;
 
     void Start()
     {

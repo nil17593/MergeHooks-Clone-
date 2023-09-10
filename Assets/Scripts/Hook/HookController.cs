@@ -23,10 +23,11 @@ public class HookController : MonoBehaviour
 
     #region booleans
     public bool canThrow;
-    public bool canPull;
+    public bool isReached;
     public bool pullDone;
     public bool canMove;
     public bool isreversing = false;
+    public bool canPull = false;
     #endregion
 
     #region Private Components
@@ -35,6 +36,7 @@ public class HookController : MonoBehaviour
     #endregion
 
     [SerializeField] private Transform hookBase;
+    private Vector3 initialPos;
     
     public int count = 0;
 
@@ -47,6 +49,7 @@ public class HookController : MonoBehaviour
 
     private void Start()
     {
+        initialPos = transform.position;
         SetDamageBasedOnHookLevel(hookLevel);
         initialPosition = transform.position;
     }
@@ -129,7 +132,7 @@ public class HookController : MonoBehaviour
     {
         if (!canThrow)
             return;
-        if (!canPull && canThrow)
+        if (!isReached && canThrow && health > 0)
         {
             if (!isreversing)
             {
@@ -139,6 +142,10 @@ public class HookController : MonoBehaviour
             {
                 rb.velocity = -transform.forward * speed * Time.fixedDeltaTime;
             }
+        }
+        if (canPull)
+        {
+            ReturnToBase();
         }
     }
 
@@ -181,8 +188,14 @@ public class HookController : MonoBehaviour
 
             if (health <= 0)
             {
-                canPull=true;
-                GameManager.Instance.hookControllers.Remove(this);
+                isReached=true;
+
+                if (GameManager.Instance.CanStartTopull())
+                {
+                    Debug.Log("ASDD");
+                    GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
+                }
+                
                 //foreach (HookController hook in GameManager.Instance.movingHooks)
                 //{
                 //    if (hook.canPull != true)
@@ -192,5 +205,11 @@ public class HookController : MonoBehaviour
                 //}
             }
         }
+    }
+
+    public void ReturnToBase()
+    {
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, initialPos, 10f * Time.deltaTime);
+        transform.position = newPosition;
     }
 }

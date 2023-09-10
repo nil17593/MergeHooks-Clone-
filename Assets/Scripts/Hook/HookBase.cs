@@ -36,7 +36,7 @@ public class HookBase : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.isHooksMoving)
+        if (!GameManager.Instance.canHandleTouch)
             return;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
@@ -108,6 +108,7 @@ public class HookBase : MonoBehaviour
     {
         initialPos = pos;
     }
+
     public void SetHookControllerLevel(HookLevel _hookLevel)
     {
         hookController.hookLevel = _hookLevel;
@@ -203,6 +204,14 @@ public class HookBase : MonoBehaviour
         }
 
         thisHookContainer.ActivateDeactivateLevelText(false);
+        if (GameManager.Instance.hookControllers.Contains(this.hookController))
+        {
+            GameManager.Instance.hookControllers.Remove(this.hookController);
+        }
+        if (GameManager.Instance.hookControllers.Contains(otherHook.hookController))
+        {
+            GameManager.Instance.hookControllers.Remove(otherHook.hookController);
+        }
         Destroy(otherHook.gameObject);
         Destroy(gameObject);
     }
