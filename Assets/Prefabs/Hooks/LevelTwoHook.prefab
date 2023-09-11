@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7576064806962280517}
   - component: {fileID: 7096653931196240766}
   - component: {fileID: -1565717958331440237}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LevelTwoHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 7576064806985044708}
   - component: {fileID: 7576064806985044709}
   - component: {fileID: 7576064806985044710}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hook
   m_TagString: Untagged
   m_Icon: {fileID: 0}

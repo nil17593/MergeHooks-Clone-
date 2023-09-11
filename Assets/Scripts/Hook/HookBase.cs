@@ -116,7 +116,7 @@ public class HookBase : MonoBehaviour
 
     public void ThrowTheHooks()
     {
-        hookController.SetInitialPosition(hookController.transform.position);
+        //hookController.SetInitialPosition(hookController.transform.position);
         hookController.canThrow = true;
         hookController.isReached = false;
         hookController.canPull = false;
@@ -125,7 +125,7 @@ public class HookBase : MonoBehaviour
     #region Hook Merging 
     private void CheckForHookMerging()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
 
         foreach (var collider in colliders)
         {
