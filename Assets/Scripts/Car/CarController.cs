@@ -43,7 +43,7 @@ public class CarController : MonoBehaviour, IDamagable
 
     public void PullCar()
     {
-        transform.Translate(Vector3.back * 5f * Time.deltaTime);
+        transform.Translate(Vector3.back * 15f * Time.deltaTime);
     }
 }
 

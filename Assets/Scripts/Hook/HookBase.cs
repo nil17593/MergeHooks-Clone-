@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// HookBase class attached on the Base of the hook 
 /// Act as a base of the Hook and holds the references of the Hook Container 
@@ -26,6 +25,7 @@ public class HookBase : MonoBehaviour
     private int currentEnumIndex = 0;
     private Camera mainCamera;
     private RaycastHit hitInfo;
+    public bool isThisHookSelected = false;
     #endregion
 
     private void Start()
@@ -49,6 +49,7 @@ public class HookBase : MonoBehaviour
                 {
                     if (hitInfo.collider.gameObject == gameObject)
                     {
+                        isThisHookSelected = true;
                         isDragging = true;
                         foreach (HookBase hook in GameManager.Instance.activeHooks)
                         {
@@ -68,18 +69,19 @@ public class HookBase : MonoBehaviour
         // Release the selected object when the left mouse button is released
         if (Input.GetMouseButtonUp(0))
         {
-            isDragging = false;
-            foreach (HookBase hook in GameManager.Instance.activeHooks)
+            if (isThisHookSelected)
             {
-                if (hook.hookLevel == this.hookLevel)
+                isThisHookSelected = false;
+                isDragging = false;
+                foreach (HookBase hook in GameManager.Instance.activeHooks)
                 {
-                    if (hook.thisHookContainer != thisHookContainer)
+                    if (hook.hookLevel == this.hookLevel)
                     {
                         hook.thisHookContainer.ResetColor();
                     }
                 }
+                CheckForHookMerging();
             }
-            CheckForHookMerging();
         }
 
         // Move the selected object when the left mouse button is held down
@@ -125,7 +127,7 @@ public class HookBase : MonoBehaviour
     #region Hook Merging 
     private void CheckForHookMerging()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.4f);
 
         foreach (var collider in colliders)
         {
@@ -135,11 +137,13 @@ public class HookBase : MonoBehaviour
 
             if (otherHook != null && otherHook != this && otherHook.hookLevel == this.hookLevel)//if the two same level hooks
             {
+                Debug.Log("Merged");
                 MergeHooks(otherHook);
                 break;
             }
             else if (otherHook != null && otherHook != this && otherHook.hookLevel != this.hookLevel)//if we swap the positions of two hooks
             {
+                Debug.Log("we swap the positions of two hooks");
                 //making the references for the hooks
                 Vector3 otherHooksPos = otherHook.thisHookContainer.transform.position + new Vector3(0, 0.8f, 0);
                 Vector3 thisHooksPos = thisHookContainer.transform.position + new Vector3(0, 0.8f, 0);
@@ -149,31 +153,34 @@ public class HookBase : MonoBehaviour
                 //other hook settings
                 otherHook.transform.position = thisHooksPos;
                 otherHook.thisHookContainer = hookContainerForOtherHook;
-                otherHook.transform.SetParent(hookContainerForOtherHook.transform);
+                otherHook.transform.SetParent(otherHook.thisHookContainer.transform);
                 otherHook.SetCurrentPosition(otherHook.transform.position);
-                otherHook.thisHookContainer.levelText.text = "" + (int)otherHook.hookLevel;
                 otherHook.hookController.hookLevel = otherHook.hookLevel;
+                otherHook.thisHookContainer.levelText.text = "" + (int)otherHook.hookLevel;
+                otherHook.initialPos = otherHook.transform.position;
                 //otherHook.hookController.SetInitialPosition(otherHook.hookController.transform.position);
                 //this hook settings
                 transform.position = otherHooksPos;
                 thisHookContainer = hookContainerForThisHook;
                 transform.SetParent(hookContainerForThisHook.transform);
+                hookController.hookLevel = this.hookLevel;
                 thisHookContainer.levelText.text = "" + (int)hookLevel;
-                hookController.hookLevel = hookLevel;
-                initialPos = transform.position;
+                //initialPos = transform.position;
+                SetCurrentPosition(transform.position);
                 //hookController.SetInitialPosition(hookController.transform.position);
             }
             else if (hittingHookContainer != null && !hittingHookContainer.isOccupied)// if we change the position of the hook
             {
+                Debug.Log("we change the position of the hook");
                 thisHookContainer.ActivateDeactivateLevelText(false);
-                hittingHookContainer.isOccupied = true;
                 thisHookContainer.isOccupied = false;
-                thisHookContainer = hittingHookContainer;
                 transform.position = hittingHookContainer.transform.position + new Vector3(0, 0.8f, 0);
                 transform.SetParent(hittingHookContainer.transform);
+                thisHookContainer = hittingHookContainer;
+                hookController.hookLevel = hookLevel;
                 initialPos = transform.position;
                 thisHookContainer.levelText.text = "" + (int)hookLevel;
-                hookController.hookLevel = hookLevel;
+                hittingHookContainer.isOccupied = true;
                 thisHookContainer.ActivateDeactivateLevelText(true);
                 //hookController.SetInitialPosition(hookController.transform.position);
             }
@@ -187,6 +194,19 @@ public class HookBase : MonoBehaviour
     //Merge the same level of hooks to create combined bigger hook
     private void MergeHooks(HookBase otherHook)
     {
+        thisHookContainer.ActivateDeactivateLevelText(false);
+
+        currentEnumIndex = (int)hookLevel;
+        currentEnumIndex = (currentEnumIndex + 1) % System.Enum.GetValues(typeof(HookLevel)).Length;
+        HookLevel hook;
+        hook = (HookLevel)currentEnumIndex;
+        if (((int)hook) <= GameManager.Instance.hooks.Length)
+        {
+            Vector3 pos = otherHook.thisHookContainer.transform.position+ new Vector3(0,0.8f,0);
+            Debug.Log(pos);
+            GameManager.Instance.AddMergedHook(hook, pos, otherHook.thisHookContainer);
+            Debug.Log("HAHSHAHAHAHAGAGA");
+        }
         thisHookContainer.isOccupied = false;
 
         if (GameManager.Instance.activeHooks.Contains(this))
@@ -208,17 +228,6 @@ public class HookBase : MonoBehaviour
             FollowCamera.Instance.hooks.Remove(otherHook.transform);
         }
 
-
-        currentEnumIndex = (int)hookLevel;
-        currentEnumIndex = (currentEnumIndex + 1) % System.Enum.GetValues(typeof(HookLevel)).Length;
-        HookLevel hook;
-        hook = (HookLevel)currentEnumIndex;
-        if (((int)hook) <= GameManager.Instance.hooks.Length)
-        {
-            GameManager.Instance.AddMergedHook(hook, otherHook.transform.position, otherHook.thisHookContainer);
-        }
-
-        thisHookContainer.ActivateDeactivateLevelText(false);
         if (GameManager.Instance.hookControllers.Contains(this.hookController))
         {
             GameManager.Instance.hookControllers.Remove(this.hookController);
@@ -227,6 +236,7 @@ public class HookBase : MonoBehaviour
         {
             GameManager.Instance.hookControllers.Remove(otherHook.hookController);
         }
+
         Destroy(otherHook.gameObject);
         Destroy(gameObject);
     }

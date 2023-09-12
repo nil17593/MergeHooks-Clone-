@@ -94,8 +94,8 @@ public class GameManager : Singleton<GameManager>
             hookBase.thisHookContainer = hookContainer;
             hookContainer.isOccupied = true;
             hookContainer.ActivateDeactivateLevelText(true);
-            hookContainer.levelText.text = ""+ ((int)hookBase.hookLevel);
             hookBase.SetHookControllerLevel(HookLevel.ONE);
+            hookContainer.levelText.text = ""+ ((int)hookBase.hookLevel);
             activeHooks.Add(hookBase);
             hookControllers.Add(hookBase.hookController);
             FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
@@ -141,101 +141,101 @@ public class GameManager : Singleton<GameManager>
             case HookLevel.TWO:
                 HookBase hook2 = Instantiate(hooks[1], pos, Quaternion.identity, parent.transform);
                 hook2.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook2.hookLevel);
                 activeHooks.Add(hook2);
                 parent.isOccupied = true;
                 hook2.SetHookControllerLevel(HookLevel.TWO);
                 hookControllers.Add(hook2.hookController);
+                parent.levelText.text = "" + ((int)hook2.hookLevel);
                 break;
 
             case HookLevel.THREE:
                 HookBase hook3 = Instantiate(hooks[2], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook3);
                 hook3.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook3.hookLevel);
                 parent.isOccupied = true;
                 hook3.SetHookControllerLevel(HookLevel.THREE);
                 hookControllers.Add(hook3.hookController);
+                parent.levelText.text = "" + ((int)hook3.hookLevel);
                 break;
 
             case HookLevel.FOUR:
                 HookBase hook4 = Instantiate(hooks[3], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook4);
                 hook4.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook4.hookLevel);
                 parent.isOccupied = true;
                 hook4.SetHookControllerLevel(HookLevel.FOUR);
                 hookControllers.Add(hook4.hookController);
+                parent.levelText.text = "" + ((int)hook4.hookLevel);
                 break;
 
             case HookLevel.FIVE:
                 HookBase hook5 = Instantiate(hooks[4], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook5);
                 hook5.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook5.hookLevel);
                 parent.isOccupied = true;
                 hook5.SetHookControllerLevel(HookLevel.FIVE);
                 hookControllers.Add(hook5.hookController);
+                parent.levelText.text = "" + ((int)hook5.hookLevel);
                 break;
 
             case HookLevel.SIX:
                 HookBase hook6 = Instantiate(hooks[5], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook6);
                 hook6.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook6.hookLevel);
                 parent.isOccupied = true;
                 hook6.SetHookControllerLevel(HookLevel.SIX);
                 hookControllers.Add(hook6.hookController);
+                parent.levelText.text = "" + ((int)hook6.hookLevel);
                 break;
 
             case HookLevel.SEVEN:
                 HookBase hook7 = Instantiate(hooks[6], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook7);
                 hook7.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook7.hookLevel);
                 parent.isOccupied = true;
                 hook7.SetHookControllerLevel(HookLevel.SEVEN);
                 hookControllers.Add(hook7.hookController);
+                parent.levelText.text = "" + ((int)hook7.hookLevel);
                 break;
 
             case HookLevel.EIGHT:
                 HookBase hook8 = Instantiate(hooks[7], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook8);
                 hook8.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook8.hookLevel);
                 parent.isOccupied = true;
                 hook8.SetHookControllerLevel(HookLevel.EIGHT);
                 hookControllers.Add(hook8.hookController);
+                parent.levelText.text = "" + ((int)hook8.hookLevel);
                 break;
 
             case HookLevel.NINE:
                 HookBase hook9 = Instantiate(hooks[8], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook9);
                 hook9.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook9.hookLevel);
                 parent.isOccupied = true;
                 hook9.SetHookControllerLevel(HookLevel.NINE);
                 hookControllers.Add(hook9.hookController);
+                parent.levelText.text = "" + ((int)hook9.hookLevel);
                 break;
 
             case HookLevel.TEN:
                 HookBase hook10 = Instantiate(hooks[9], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook10);
                 hook10.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook10.hookLevel);
                 parent.isOccupied = true;
                 hook10.SetHookControllerLevel(HookLevel.TEN);
                 hookControllers.Add(hook10.hookController);
+                parent.levelText.text = "" + ((int)hook10.hookLevel);
                 break;
 
             case HookLevel.ELEVEN:
                 HookBase hook11 = Instantiate(hooks[10], pos, Quaternion.identity, parent.transform);
                 activeHooks.Add(hook11);
                 hook11.thisHookContainer = parent;
-                parent.levelText.text = "" + ((int)hook11.hookLevel);
                 parent.isOccupied = true;
                 hook11.SetHookControllerLevel(HookLevel.ELEVEN);
                 hookControllers.Add(hook11.hookController);
+                parent.levelText.text = "" + ((int)hook11.hookLevel);
                 break;
 
             default:

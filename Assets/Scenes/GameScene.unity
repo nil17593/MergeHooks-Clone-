@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 31288030}
   m_Layer: 0
   m_Name: HookContainer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 171755074}
   m_Layer: 0
   m_Name: HookContainer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1960,7 +1960,7 @@ GameObject:
   - component: {fileID: 1023957691}
   m_Layer: 0
   m_Name: HookContainer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2454,7 +2454,7 @@ GameObject:
   - component: {fileID: 1616765778}
   m_Layer: 0
   m_Name: HookContainer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3191,7 +3191,7 @@ GameObject:
   - component: {fileID: 1910629519}
   m_Layer: 0
   m_Name: HookContainer
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
