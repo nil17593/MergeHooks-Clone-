@@ -205,6 +205,7 @@ public class HookController : MonoBehaviour
             isReached = true;
             if (GameManager.Instance.CanStartTopull())
             {
+
                 GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
             }
         }

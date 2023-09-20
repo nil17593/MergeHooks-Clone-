@@ -65,8 +65,8 @@ public class GameManager : Singleton<GameManager>
             {
                 hasCoroutineStarted = true;
                 StartCoroutine(PullThecars());
+                canHandleTouch = false;
             }
-            canHandleTouch = false;
         }
     }
 
@@ -260,6 +260,7 @@ public class GameManager : Singleton<GameManager>
     IEnumerator PullThecars()
     {
         yield return new WaitForSeconds(1f);
+        hasCoroutineStarted = false;
         foreach (CarController car in carControllers)
         {
             car.canPull = true;          
@@ -273,7 +274,6 @@ public class GameManager : Singleton<GameManager>
         if (carControllers.Count <= 0)
         {
             yield return new WaitForSeconds(1f);
-            hasCoroutineStarted = false;
             presentGameState = GameState.Merging;
             CarSpawner.Instance.ResetGame();
             //CarSpawner.Instance.SpawnCars();
