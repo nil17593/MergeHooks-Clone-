@@ -7,6 +7,7 @@ public class CarController : MonoBehaviour, IDamagable
     public int health;
     private  BoxCollider collider;
     public bool canPull = false;
+    private int row, column;
     private void Awake()
     {
         collider = GetComponent<BoxCollider>();
@@ -18,6 +19,12 @@ public class CarController : MonoBehaviour, IDamagable
         {
             PullCar();
         }
+    }
+
+    public void SetPosition(int _row, int _column)
+    {
+        row = _row;
+        column = _column;
     }
 
     public void TakeDamage(int damage)
@@ -35,7 +42,13 @@ public class CarController : MonoBehaviour, IDamagable
         if (other.CompareTag("ShredderArea"))
         {
             GameManager.Instance.carControllers.Remove(this);
+            if (CarSpawner.Instance.carsOnGrid.Contains(this))
+            {
+                CarSpawner.Instance.carsOnGrid.Remove(this); 
+            }
+            
             GameManager.Instance.AddCash(5);
+            CarSpawner.Instance.occupiedPositions[row, column] = false;
             Destroy(gameObject);
         }
     }

@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hookLevel: 5
   hookController: {fileID: 7576064806985044728}
+  isThisHookSelected: 0
 --- !u!65 &-1565717958331440237
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -214,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hookLevel: 0
   HookState: 0
-  speed: 150
+  speed: 250
   timer: 0
   duration: 0.5
   initialPosition: {x: 0, y: 0, z: 0}

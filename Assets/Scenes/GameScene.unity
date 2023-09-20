@@ -1262,6 +1262,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &715997885
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 715997886}
+  m_Layer: 0
+  m_Name: HookContainerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &715997886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715997885}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &761027212
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,8 +1458,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   carPrefabs:
-  - {fileID: 6827531595545266867, guid: 45084d19189cee24c881a9919ed4b8fe, type: 3}
-  - {fileID: 1190431945706942802, guid: 26cb67281e7a679498f6ca3b0e29212b, type: 3}
+  - {fileID: 8093717407097986125, guid: 45084d19189cee24c881a9919ed4b8fe, type: 3}
+  - {fileID: -7055470877587529842, guid: 26cb67281e7a679498f6ca3b0e29212b, type: 3}
   numRows: 8
   numColumns: 5
   xSpacing: 1.5
@@ -1436,6 +1467,8 @@ MonoBehaviour:
   rowSpacing: 2
   giftPrefabs:
   - {fileID: 1190431945706942802, guid: 6c62dc1c108040940b8d468a020684b9, type: 3}
+  carsOnGrid: []
+  giftBoxes: []
 --- !u!4 &825936604
 Transform:
   m_ObjectHideFlags: 0

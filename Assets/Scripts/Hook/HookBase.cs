@@ -223,7 +223,7 @@ public class HookBase : MonoBehaviour
         {
             FollowCamera.Instance.hooks.Remove(this.transform);
         }
-        if (FollowCamera.Instance.hooks.Contains(otherHook.transform))
+        if (FollowCamera.Instance.hooks.Contains(otherHook.transform)) 
         {
             FollowCamera.Instance.hooks.Remove(otherHook.transform);
         }

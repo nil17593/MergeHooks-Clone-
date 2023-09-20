@@ -130,16 +130,15 @@ public class HookController : MonoBehaviour
         if (!canThrow || GameManager.Instance.presentGameState==GameManager.GameState.Merging)
             return;
 
-        Debug.Log("HAHHAHAS");
         if (!isReached && canThrow && health > 0)
         {
             if (!isreversing)
             {
-                rb.velocity = transform.forward * speed * Time.fixedDeltaTime;
+                rb.velocity = speed * Time.fixedDeltaTime * transform.forward;
             }
             else
             {
-                rb.velocity = -transform.forward * speed * Time.fixedDeltaTime;
+                rb.AddForce(1.5f * speed * Time.deltaTime * -transform.forward, ForceMode.Force);// = -transform.forward * speed * Time.fixedDeltaTime;
             }
         }
         if (canPull)
@@ -188,7 +187,6 @@ public class HookController : MonoBehaviour
                 isReached=true;
                 if (GameManager.Instance.CanStartTopull())
                 {
-                    Debug.Log("ASDD");
                     GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
                 }
                 
