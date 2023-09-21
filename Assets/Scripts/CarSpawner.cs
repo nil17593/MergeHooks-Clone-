@@ -21,7 +21,8 @@ public class CarSpawner : Singleton<CarSpawner>
     public static event Action<bool> onPulledCars;
     public List<GameObject> giftBoxes = new List<GameObject>();
     public bool[,] occupiedPositions;// = new bool[numRows, numColumns];
-
+    public int carRandomSpawningRate;
+    public bool isGiftBoxInstantiatedOnce = false;
     void Start()
     {
         occupiedPositions = new bool[numRows, numColumns];
@@ -45,83 +46,132 @@ public class CarSpawner : Singleton<CarSpawner>
         float currentX = startingPoint.position.x;
         float currentZ = startingPoint.position.z;
 
-        int gridSize = numRows * numColumns;
-        int randomPercentage = UnityEngine.Random.Range(0, 101); // Generate a random percentage between 0 and 100.
-        int numOfCarsToSpawn = CalculateNumberOfCarsToSpawn(gridSize, randomPercentage);
-
-        int count = 0;
-        for (int row = 0; row < numRows; row++)
+        if (!GameManager.Instance.isThisLevelCleared)
         {
-            for (int col = 0; col < numColumns; col++)
+            for (int row = 0; row < numRows; row++)
             {
-                if (count < numOfCarsToSpawn)
+                for (int col = 0; col < numColumns; col++)
                 {
+
                     int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
                     Vector3 spawnPosition = new Vector3(currentX, 0.8f, currentZ);
 
                     // Check if the position is occupied.
                     if (!occupiedPositions[row, col])
                     {
-                        CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
-                        float zSize = GetZSizeOfObject(car);
-                        maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
-                        carsOnGrid.Add(car);
+                        int randomPercentage = UnityEngine.Random.Range(0, 101);
+                        if (randomPercentage > carRandomSpawningRate)
+                        {
+                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                            float zSize = GetZSizeOfObject(car);
+                            maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                            carsOnGrid.Add(car);
 
-                        // Mark the position as occupied.
-                        occupiedPositions[row, col] = true;
-                        car.SetPosition(row, col);
+                            // Mark the position as occupied.
+                            occupiedPositions[row, col] = true;
+                            car.SetPosition(row, col);
+                        }
                     }
-                    count++;
+                    currentX += xSpacing;
                 }
 
+                float maxZSize = Mathf.Max(maxZSizeInColumn);
+                currentX = startingPoint.position.x;
+                currentZ += maxZSize + xSpacing;
+            }
+            float additionalRowStartZ = currentZ + rowSpacing;
+            if (!isGiftBoxInstantiatedOnce)
+            {
+                isGiftBoxInstantiatedOnce = true;
+                for (int col = 0; col < numColumns; col++)
+                {
+                    int prefabIndex = col % giftPrefabs.Count;
+
+                    GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, 0.8f, additionalRowStartZ), Quaternion.identity);
+                    giftBoxes.Add(giftBox);
+                    currentX += xSpacing;
+                }
+            }
+        }
+        else
+        {
+            for (int row = 0; row < numRows; row++)
+            {
+                for (int col = 0; col < numColumns; col++)
+                {
+
+                    int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
+                    Vector3 spawnPosition = new Vector3(currentX, 0.8f, currentZ);
+
+                    // Check if the position is occupied.
+                    //if (!occupiedPositions[row, col])
+                    //{
+                        int randomPercentage = UnityEngine.Random.Range(0, 101);
+                        if (randomPercentage > carRandomSpawningRate)
+                        {
+                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                            float zSize = GetZSizeOfObject(car);
+                            maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                            carsOnGrid.Add(car);
+
+                            // Mark the position as occupied.
+                            occupiedPositions[row, col] = true;
+                            car.SetPosition(row, col);
+                        }
+                    //}
+                    currentX += xSpacing;
+                }
+
+                float maxZSize = Mathf.Max(maxZSizeInColumn);
+                currentX = startingPoint.position.x;
+                currentZ += maxZSize + xSpacing;
+            }
+            float additionalRowStartZ = currentZ + rowSpacing;
+            for (int col = 0; col < numColumns; col++)
+            {
+                int prefabIndex = col % giftPrefabs.Count;
+
+                GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, 0.8f, additionalRowStartZ), Quaternion.identity);
+                giftBoxes.Add(giftBox);
                 currentX += xSpacing;
             }
-
-            float maxZSize = Mathf.Max(maxZSizeInColumn);
-            currentX = startingPoint.position.x;
-            currentZ += maxZSize + xSpacing;
         }
 
-        float additionalRowStartZ = currentZ + rowSpacing;
-
-        for (int col = 0; col < numColumns; col++)
-        {
-            int prefabIndex = col % giftPrefabs.Count;
-
-            GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, 0.8f, additionalRowStartZ), Quaternion.identity);
-            giftBoxes.Add(giftBox);
-            currentX += xSpacing;
-        }
     }
 
     public void ResetGame()
     {
-        //List<GameObject> carsToDestroy = new List<GameObject>();
 
-        //foreach (GameObject car in carsOnGrid)
-        //{
-        //    carsToDestroy.Add(car);
-        //}
-
-        //foreach (GameObject car in carsToDestroy)
-        //{
-        //    carsOnGrid.Remove(car);
-        //    Destroy(car);
-        //}
-        List<GameObject> giftsToDestroy = new List<GameObject>();
-
-        foreach (GameObject giftBox in giftBoxes)
+        if (GameManager.Instance.isThisLevelCleared)
         {
-            giftsToDestroy.Add(giftBox);
-        }
+            List<CarController> carsToDestroy = new List<CarController>();
 
-        foreach (GameObject giftBox in giftsToDestroy)
-        {
-            giftBoxes.Remove(giftBox);
-            Destroy(giftBox);
+            foreach (CarController car in carsOnGrid)
+            {
+                carsToDestroy.Add(car);
+            }
+
+            foreach (CarController car in carsToDestroy)
+            {
+                carsOnGrid.Remove(car);
+                Destroy(car);
+            }
+            List<GameObject> giftsToDestroy = new List<GameObject>();
+
+            foreach (GameObject giftBox in giftBoxes)
+            {
+                giftsToDestroy.Add(giftBox);
+            }
+
+            foreach (GameObject giftBox in giftsToDestroy)
+            {
+                giftBoxes.Remove(giftBox);
+                Destroy(giftBox);
+            }
+            carsOnGrid.Clear();
+            //Debug.Log("ASDD");
+            giftBoxes.Clear();
         }
-        //carsOnGrid.Clear();
-        giftBoxes.Clear();
         SpawnCars();
     }
 

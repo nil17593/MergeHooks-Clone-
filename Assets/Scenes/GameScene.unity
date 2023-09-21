@@ -216,7 +216,9 @@ MonoBehaviour:
   canHandleTouch: 0
   isHooksMoving: 0
   hasCoroutineStarted: 0
-  gameCash: {fileID: 92474234}
+  isThisLevelCleared: 0
+  gameCashText: {fileID: 92474234}
+  levelText: {fileID: 767791940}
 --- !u!4 &9073922
 Transform:
   m_ObjectHideFlags: 0
@@ -2056,6 +2058,8 @@ MonoBehaviour:
   - {fileID: 1190431945706942802, guid: 6c62dc1c108040940b8d468a020684b9, type: 3}
   carsOnGrid: []
   giftBoxes: []
+  carRandomSpawningRate: 70
+  isGiftBoxInstantiatedOnce: 0
 --- !u!4 &825936604
 Transform:
   m_ObjectHideFlags: 0

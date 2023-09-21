@@ -26,17 +26,24 @@ public class GameManager : Singleton<GameManager>
     public bool canHandleTouch;
     public bool isHooksMoving;
     public bool hasCoroutineStarted = false;
+    public bool isThisLevelCleared = false;
     #endregion
 
+    #region Playerprefs
+    private const string LevelKey = "CurrentLevel";
+    #endregion
 
     #region UI
-    [SerializeField] private TextMeshProUGUI gameCash;
+    [SerializeField] private TextMeshProUGUI gameCashText;
+    [SerializeField] private TextMeshProUGUI levelText;
     #endregion
 
 
     private void Start()
     {
-        gameCash.text = PlayerPrefs.GetInt("Cash").ToString();
+        int currentLevel = GetCurrentLevel();
+        levelText.text = "LEVEL " + currentLevel;
+        gameCashText.text = PlayerPrefs.GetInt("Cash").ToString();
         canHandleTouch = true;
         presentGameState = GameState.Merging;
     }
@@ -70,6 +77,17 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void SaveCurrentLevel(int levelNumber)
+    {
+        PlayerPrefs.SetInt(LevelKey, levelNumber);
+        PlayerPrefs.Save();
+    }
+
+    public int GetCurrentLevel()
+    {
+        return PlayerPrefs.GetInt(LevelKey, 1);
+    }
+
     #region UI Methods
 
     public void AddCash(int amount)
@@ -77,7 +95,7 @@ public class GameManager : Singleton<GameManager>
         int cash = PlayerPrefs.GetInt("Cash");
         cash += amount;
         PlayerPrefs.SetInt("Cash", cash);
-        gameCash.text = cash.ToString();
+        gameCashText.text = cash.ToString();
     }
 
     #endregion
@@ -274,8 +292,11 @@ public class GameManager : Singleton<GameManager>
         if (carControllers.Count <= 0)
         {
             yield return new WaitForSeconds(1f);
+            //int currentLevel = GetCurrentLevel();
+            //levelText.text = "LEVEL " + currentLevel;
             presentGameState = GameState.Merging;
             CarSpawner.Instance.ResetGame();
+
             //CarSpawner.Instance.SpawnCars();
             yield break;
         }
@@ -283,14 +304,19 @@ public class GameManager : Singleton<GameManager>
 
     public void OnThrowTheHooksButtonPressed()
     {
-        if (hookControllers.Count <= 0)
-            return;
-        buttonPanel.SetActive(false);
-        presentGameState = GameState.Throwing;
-        isHooksMoving = true;
-        foreach(HookBase hookBase in activeHooks)
+        if (presentGameState == GameState.Merging)
         {
-            hookBase.ThrowTheHooks();        
+            isThisLevelCleared = false;
+
+            if (hookControllers.Count <= 0)
+                return;
+            buttonPanel.SetActive(false);
+            presentGameState = GameState.Throwing;
+            isHooksMoving = true;
+            foreach (HookBase hookBase in activeHooks)
+            {
+                hookBase.ThrowTheHooks();
+            }
         }
     }
 }

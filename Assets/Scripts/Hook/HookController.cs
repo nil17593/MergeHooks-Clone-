@@ -200,16 +200,24 @@ public class HookController : MonoBehaviour
             }
         }
 
-        if (collider.gameObject.CompareTag("Gift"))
+        else if (collider.gameObject.CompareTag("Gift"))
         {
             isReached = true;
+            GameManager.Instance.isThisLevelCleared = true;
             if (GameManager.Instance.CanStartTopull())
             {
-
                 GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
             }
         }
     }
+
+    //GameManager.Instance.isThisLevelCleared = true;
+    //        if (GameManager.Instance.CanStartTopull())
+    //        {
+    //            GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
+    //            int currentLevel = GameManager.Instance.GetCurrentLevel();
+    //int nextLevel = currentLevel + 1;
+    //GameManager.Instance.SaveCurrentLevel(nextLevel);
 
     public void ResetGame()
     {
