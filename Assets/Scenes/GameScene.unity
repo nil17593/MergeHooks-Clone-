@@ -216,7 +216,7 @@ MonoBehaviour:
   canHandleTouch: 0
   isHooksMoving: 0
   hasCoroutineStarted: 0
-  gameCash: {fileID: 0}
+  gameCash: {fileID: 92474234}
 --- !u!4 &9073922
 Transform:
   m_ObjectHideFlags: 0
