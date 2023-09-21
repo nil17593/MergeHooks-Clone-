@@ -18,15 +18,21 @@ public class CarSpawner : Singleton<CarSpawner>
     [SerializeField] private List<GameObject> giftPrefabs;
     private float[] maxZSizeInColumn;
     public List<CarController> carsOnGrid = new List<CarController>();
-    public static event Action<bool> onPulledCars;
+    public static event Action OnCarsPulled;
     public List<GameObject> giftBoxes = new List<GameObject>();
     public bool[,] occupiedPositions;// = new bool[numRows, numColumns];
     public int carRandomSpawningRate;
     public bool isGiftBoxInstantiatedOnce = false;
+
     void Start()
     {
         occupiedPositions = new bool[numRows, numColumns];
         SpawnCars();
+    }
+
+    public void TriggerCarsPulledEvent()
+    {
+        OnCarsPulled?.Invoke();
     }
 
     // Helper function to get the size of a game object along the Z-axis
@@ -40,6 +46,16 @@ public class CarSpawner : Singleton<CarSpawner>
         return 0f;
     }
 
+    private void OnEnable()
+    {
+        OnCarsPulled += ResetGame;
+    }
+
+    private void OnDestroy()
+    {
+        OnCarsPulled -= ResetGame;
+    }
+
     public void SpawnCars()
     {
         maxZSizeInColumn = new float[numColumns];
@@ -51,14 +67,12 @@ public class CarSpawner : Singleton<CarSpawner>
             for (int row = 0; row < numRows; row++)
             {
                 for (int col = 0; col < numColumns; col++)
-                {
-
-                    int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
-                    Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
-
+                {           
                     // Check if the position is occupied.
                     if (!occupiedPositions[row, col])
                     {
+                        int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
+                        Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
                         int randomPercentage = UnityEngine.Random.Range(0, 101);
                         if (randomPercentage > carRandomSpawningRate)
                         {
@@ -99,25 +113,23 @@ public class CarSpawner : Singleton<CarSpawner>
             {
                 for (int col = 0; col < numColumns; col++)
                 {
-
-                    int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
-                    Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
-
                     // Check if the position is occupied.
                     //if (!occupiedPositions[row, col])
                     //{
                         int randomPercentage = UnityEngine.Random.Range(0, 101);
-                        if (randomPercentage > carRandomSpawningRate)
-                        {
-                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
-                            float zSize = GetZSizeOfObject(car);
-                            maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
-                            carsOnGrid.Add(car);
+                    if (randomPercentage > carRandomSpawningRate)
+                    {
+                        int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
+                        Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
+                        CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                        float zSize = GetZSizeOfObject(car);
+                        maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                        carsOnGrid.Add(car);
 
-                            // Mark the position as occupied.
-                            occupiedPositions[row, col] = true;
-                            car.SetPosition(row, col);
-                        }
+                        // Mark the position as occupied.
+                        occupiedPositions[row, col] = true;
+                        car.SetPosition(row, col);
+                    }
                     //}
                     currentX += xSpacing;
                 }
@@ -141,38 +153,43 @@ public class CarSpawner : Singleton<CarSpawner>
 
     public void ResetGame()
     {
+        Invoke(nameof(OnAllCarsPulled), 2f);
+    }
 
-        //if (GameManager.Instance.isThisLevelCleared)
-        //{
-        //    List<CarController> carsToDestroy = new List<CarController>();
+    void OnAllCarsPulled()
+    {
+        if (GameManager.Instance.isThisLevelCleared)
+        {
+            List<CarController> carsToDestroy = new List<CarController>();
 
-        //    foreach (CarController car in carsOnGrid)
-        //    {
-        //        carsToDestroy.Add(car);
-        //    }
+            foreach (CarController car in carsOnGrid)
+            {
+                carsToDestroy.Add(car);
+            }
 
-        //    foreach (CarController car in carsToDestroy)
-        //    {
-        //        carsOnGrid.Remove(car);
-        //        Destroy(car);
-        //    }
-        //    List<GameObject> giftsToDestroy = new List<GameObject>();
+            foreach (CarController car in carsToDestroy)
+            {
+                carsOnGrid.Remove(car);
+                Destroy(car);
+            }
+            List<GameObject> giftsToDestroy = new List<GameObject>();
 
-        //    foreach (GameObject giftBox in giftBoxes)
-        //    {
-        //        giftsToDestroy.Add(giftBox);
-        //    }
+            foreach (GameObject giftBox in giftBoxes)
+            {
+                giftsToDestroy.Add(giftBox);
+            }
 
-        //    foreach (GameObject giftBox in giftsToDestroy)
-        //    {
-        //        giftBoxes.Remove(giftBox);
-        //        Destroy(giftBox);
-        //    }
-        //    carsOnGrid.Clear();
-        //    //Debug.Log("ASDD");
-        //    giftBoxes.Clear();
-        //}
+            foreach (GameObject giftBox in giftsToDestroy)
+            {
+                giftBoxes.Remove(giftBox);
+                Destroy(giftBox);
+            }
+            carsOnGrid.Clear();
+            //Debug.Log("ASDD");
+            giftBoxes.Clear();
+        }
         SpawnCars();
+        GameManager.Instance.presentGameState = GameManager.GameState.Merging;
     }
 
     int CalculateNumberOfCarsToSpawn(int gridSize, int randomPercentage)

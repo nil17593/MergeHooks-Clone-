@@ -14,6 +14,16 @@ public class CarController : MonoBehaviour, IDamagable
         collider = GetComponent<BoxCollider>();
     }
 
+    //private void OnEnable()
+    //{
+    //    CarSpawner.OnCarsPulled += RespawnNewCars;
+    //}
+
+    //private void OnDestroy()
+    //{
+    //    CarSpawner.OnCarsPulled -= RespawnNewCars;
+    //}
+
     private void Update()
     {
         if (canPull)
@@ -41,8 +51,7 @@ public class CarController : MonoBehaviour, IDamagable
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("ShredderArea"))
-        {
-            GameManager.Instance.carControllers.Remove(this);
+        {          
             if (CarSpawner.Instance.carsOnGrid.Contains(this))
             {
                 CarSpawner.Instance.carsOnGrid.Remove(this); 
@@ -50,7 +59,27 @@ public class CarController : MonoBehaviour, IDamagable
             GameObject cash = Instantiate(UIController.Instance.cashPrefab, transform.position, UIController.Instance.cashPrefab.transform.rotation);
             GameManager.Instance.AddCash(5);
             CarSpawner.Instance.occupiedPositions[row, column] = false;
+            if (GameManager.Instance.carControllers.Contains(this))
+            {
+                GameManager.Instance.carControllers.Remove(this);
+            }
+            OnCarPulled();
             Destroy(gameObject);
+        }
+    }
+
+    //public void RespawnNewCars()
+    //{
+    //    //StartCoroutine(GameManager.Instance.SpawnNewCars());
+    //    CarSpawner.Instance.ResetGame();
+    //    GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+    //}
+
+    void OnCarPulled()
+    {
+        if (GameManager.Instance.carControllers.Count <= 0)
+        {
+            CarSpawner.Instance.TriggerCarsPulledEvent();
         }
     }
 

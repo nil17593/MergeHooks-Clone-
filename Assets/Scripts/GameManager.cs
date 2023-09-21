@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 /// <summary>
 /// Gamemanager class handles spawning of Hooks and holds the list of HookContainers
@@ -28,7 +29,8 @@ public class GameManager : Singleton<GameManager>
     public bool hasCoroutineStarted = false;
     public bool isThisLevelCleared = false;
     #endregion
-
+    public static event Action StartCarPulling;
+    
     #region Playerprefs
     private const string LevelKey = "CurrentLevel";
     #endregion
@@ -75,7 +77,7 @@ public class GameManager : Singleton<GameManager>
                 //if (!hasCoroutineStarted)
                 //{
                     hasCoroutineStarted = true;
-                    StartCoroutine(PullThecars());
+                    //StartCoroutine(PullThecars());
                     //int currentLevel = GetCurrentLevel();
                     //levelText.text = "LEVEL " + currentLevel;
 
@@ -270,6 +272,17 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    #region Events
+    private void OnEnable()
+    {
+        StartCarPulling += PullThecars;
+    }
+
+    private void OnDestroy()
+    {
+        StartCarPulling -= PullThecars;
+    }
+
     public bool CanStartTopull()
     {
         foreach (HookController hook in hookControllers)
@@ -279,12 +292,20 @@ public class GameManager : Singleton<GameManager>
                 return false;
             }
         }
+        TriggerPullEvent();
         return true;
     }
 
-    IEnumerator PullThecars()
+    public static void TriggerPullEvent()
     {
-        yield return new WaitForSeconds(1f);
+        StartCarPulling?.Invoke();
+    }
+
+    void PullThecars()
+    {
+        //yield return new WaitForSeconds(1f);
+        presentGameState = GameState.Pulling;
+
         foreach (CarController car in carControllers)
         {
             car.canPull = true;
@@ -298,7 +319,23 @@ public class GameManager : Singleton<GameManager>
         //hasCoroutineStarted = false;
         //CarSpawner.Instance.SpawnCars();
         //presentGameState = GameState.Merging;
+
+        //if (carControllers.Count <= 0)
+        //{
+        //    StartCoroutine(SpawnNewCars());
+        //}
     }
+    public IEnumerator SpawnNewCars()
+    {
+        yield return new WaitForSeconds(2f);
+
+        //if (carControllers.Count <= 0)
+        //{
+            CarSpawner.Instance.ResetGame();
+            GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+        //}
+    }
+    #endregion
 
     public void OnThrowTheHooksButtonPressed()
     {

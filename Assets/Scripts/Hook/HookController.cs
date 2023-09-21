@@ -187,17 +187,8 @@ public class HookController : MonoBehaviour
                 isReached = true;
                 if (GameManager.Instance.CanStartTopull())
                 {
-                    Debug.Log("ggggggg");
                     GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
                 }
-
-                //foreach (HookController hook in GameManager.Instance.movingHooks)
-                //{
-                //    if (hook.canPull != true)
-                //    {
-
-                //    }
-                //}
             }
         }
 
@@ -207,7 +198,6 @@ public class HookController : MonoBehaviour
             GameManager.Instance.isThisLevelCleared = true;
             if (GameManager.Instance.CanStartTopull())
             {
-                Debug.Log("ggggggg");
                 GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
             }
         }

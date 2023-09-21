@@ -6,16 +6,16 @@ public class CashAnimation : MonoBehaviour
 {
     private void OnEnable()
     {
-        transform.DOMoveY(4f, .2f).OnComplete(() =>
+        transform.DOMoveY(2f, 1f).OnComplete(() =>
         {
-            if (GameManager.Instance.carControllers.Count <= 0)
-            {
-                Debug.Log("HO GAYA");
-                CarSpawner.Instance.ResetGame();
-                GameManager.Instance.presentGameState = GameManager.GameState.Merging;
-            }
+            //if (GameManager.Instance.carControllers.Count <= 0)
+            //{
+            //    //Debug.Log("HO GAYA");
+            //    CarSpawner.Instance.ResetGame();
+            //    GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+            //}
         });
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, .5f);
     }
 
 
