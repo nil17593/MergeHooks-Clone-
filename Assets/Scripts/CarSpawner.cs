@@ -54,7 +54,7 @@ public class CarSpawner : Singleton<CarSpawner>
                 {
 
                     int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
-                    Vector3 spawnPosition = new Vector3(currentX, 0.8f, currentZ);
+                    Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
 
                     // Check if the position is occupied.
                     if (!occupiedPositions[row, col])
@@ -101,7 +101,7 @@ public class CarSpawner : Singleton<CarSpawner>
                 {
 
                     int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
-                    Vector3 spawnPosition = new Vector3(currentX, 0.8f, currentZ);
+                    Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
 
                     // Check if the position is occupied.
                     //if (!occupiedPositions[row, col])
@@ -142,51 +142,42 @@ public class CarSpawner : Singleton<CarSpawner>
     public void ResetGame()
     {
 
-        if (GameManager.Instance.isThisLevelCleared)
-        {
-            List<CarController> carsToDestroy = new List<CarController>();
+        //if (GameManager.Instance.isThisLevelCleared)
+        //{
+        //    List<CarController> carsToDestroy = new List<CarController>();
 
-            foreach (CarController car in carsOnGrid)
-            {
-                carsToDestroy.Add(car);
-            }
+        //    foreach (CarController car in carsOnGrid)
+        //    {
+        //        carsToDestroy.Add(car);
+        //    }
 
-            foreach (CarController car in carsToDestroy)
-            {
-                carsOnGrid.Remove(car);
-                Destroy(car);
-            }
-            List<GameObject> giftsToDestroy = new List<GameObject>();
+        //    foreach (CarController car in carsToDestroy)
+        //    {
+        //        carsOnGrid.Remove(car);
+        //        Destroy(car);
+        //    }
+        //    List<GameObject> giftsToDestroy = new List<GameObject>();
 
-            foreach (GameObject giftBox in giftBoxes)
-            {
-                giftsToDestroy.Add(giftBox);
-            }
+        //    foreach (GameObject giftBox in giftBoxes)
+        //    {
+        //        giftsToDestroy.Add(giftBox);
+        //    }
 
-            foreach (GameObject giftBox in giftsToDestroy)
-            {
-                giftBoxes.Remove(giftBox);
-                Destroy(giftBox);
-            }
-            carsOnGrid.Clear();
-            //Debug.Log("ASDD");
-            giftBoxes.Clear();
-        }
+        //    foreach (GameObject giftBox in giftsToDestroy)
+        //    {
+        //        giftBoxes.Remove(giftBox);
+        //        Destroy(giftBox);
+        //    }
+        //    carsOnGrid.Clear();
+        //    //Debug.Log("ASDD");
+        //    giftBoxes.Clear();
+        //}
         SpawnCars();
     }
 
     int CalculateNumberOfCarsToSpawn(int gridSize, int randomPercentage)
     {
         return Mathf.FloorToInt(gridSize * randomPercentage / 100);
-    }
-
-
-    public void OnCarsPulled()
-    {
-        if (onPulledCars != null)
-        {
-            onPulledCars.Invoke(true);
-        }
     }
 }
 

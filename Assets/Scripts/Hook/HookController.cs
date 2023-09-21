@@ -13,7 +13,7 @@ public class HookController : MonoBehaviour
     public HookLevel hookLevel;
     public HookState HookState;
     [SerializeField] private float speed = 5.0f;
-    
+
     [SerializeField] private float timer;
     [SerializeField] private float duration;
     [SerializeField] private Vector3 initialPosition;
@@ -36,7 +36,7 @@ public class HookController : MonoBehaviour
     #endregion
 
     [SerializeField] private Transform hookBase;
-    
+
     public int count = 0;
 
     private void Awake()
@@ -47,7 +47,7 @@ public class HookController : MonoBehaviour
     }
 
     private void Start()
-    {        
+    {
         SetDamageBasedOnHookLevel(hookLevel);
     }
 
@@ -127,7 +127,7 @@ public class HookController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!canThrow || GameManager.Instance.presentGameState==GameManager.GameState.Merging)
+        if (!canThrow || GameManager.Instance.presentGameState == GameManager.GameState.Merging)
             return;
 
         if (!isReached && canThrow && health > 0)
@@ -184,12 +184,13 @@ public class HookController : MonoBehaviour
 
             if (health <= 0)
             {
-                isReached=true;
+                isReached = true;
                 if (GameManager.Instance.CanStartTopull())
                 {
+                    Debug.Log("ggggggg");
                     GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
                 }
-                
+
                 //foreach (HookController hook in GameManager.Instance.movingHooks)
                 //{
                 //    if (hook.canPull != true)
@@ -206,6 +207,7 @@ public class HookController : MonoBehaviour
             GameManager.Instance.isThisLevelCleared = true;
             if (GameManager.Instance.CanStartTopull())
             {
+                Debug.Log("ggggggg");
                 GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
             }
         }

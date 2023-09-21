@@ -203,9 +203,7 @@ public class HookBase : MonoBehaviour
         if (((int)hook) <= GameManager.Instance.hooks.Length)
         {
             Vector3 pos = otherHook.thisHookContainer.transform.position+ new Vector3(0,0.8f,0);
-            Debug.Log(pos);
             GameManager.Instance.AddMergedHook(hook, pos, otherHook.thisHookContainer);
-            Debug.Log("HAHSHAHAHAHAGAGA");
         }
         thisHookContainer.isOccupied = false;
 

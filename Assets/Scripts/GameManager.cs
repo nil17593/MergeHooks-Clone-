@@ -68,12 +68,19 @@ public class GameManager : Singleton<GameManager>
         }
         else if (presentGameState == GameState.Pulling)
         {
-            if (!hasCoroutineStarted)
-            {
-                hasCoroutineStarted = true;
-                StartCoroutine(PullThecars());
-                canHandleTouch = false;
-            }
+           
+
+            //if (carControllers.Count <= 0)
+            //{
+                //if (!hasCoroutineStarted)
+                //{
+                    hasCoroutineStarted = true;
+                    StartCoroutine(PullThecars());
+                    //int currentLevel = GetCurrentLevel();
+                    //levelText.text = "LEVEL " + currentLevel;
+
+                //}
+            ///}
         }
     }
 
@@ -278,41 +285,33 @@ public class GameManager : Singleton<GameManager>
     IEnumerator PullThecars()
     {
         yield return new WaitForSeconds(1f);
-        hasCoroutineStarted = false;
         foreach (CarController car in carControllers)
         {
-            car.canPull = true;          
+            car.canPull = true;
         }
-       
+
         foreach (HookController hook in hookControllers)
         {
             hook.canPull = true;
         }
-
-        if (carControllers.Count <= 0)
-        {
-            yield return new WaitForSeconds(1f);
-            //int currentLevel = GetCurrentLevel();
-            //levelText.text = "LEVEL " + currentLevel;
-            presentGameState = GameState.Merging;
-            CarSpawner.Instance.ResetGame();
-
-            //CarSpawner.Instance.SpawnCars();
-            yield break;
-        }
+        //CarSpawner.Instance.ResetGame();
+        //hasCoroutineStarted = false;
+        //CarSpawner.Instance.SpawnCars();
+        //presentGameState = GameState.Merging;
     }
 
     public void OnThrowTheHooksButtonPressed()
     {
         if (presentGameState == GameState.Merging)
         {
+
             isThisLevelCleared = false;
 
             if (hookControllers.Count <= 0)
                 return;
             buttonPanel.SetActive(false);
             presentGameState = GameState.Throwing;
-            isHooksMoving = true;
+            //isHooksMoving = true;
             foreach (HookBase hookBase in activeHooks)
             {
                 hookBase.ThrowTheHooks();
