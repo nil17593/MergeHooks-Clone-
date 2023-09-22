@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,7 +56,7 @@ public class CarSpawner : Singleton<CarSpawner>
         OnCarsPulled -= ResetGame;
     }
 
-    public void SpawnCars()
+    void SpawnCars()
     {
         maxZSizeInColumn = new float[numColumns];
         float currentX = startingPoint.position.x;
@@ -84,7 +85,6 @@ public class CarSpawner : Singleton<CarSpawner>
 
                                 // Mark the position as occupied.
                                 occupiedPositions[row, col] = true;
-                                Debug.Log("IFFF  =" + occupiedPositions[row, col]);
                                 car.SetPosition(row, col);
                             }
                             else
@@ -99,8 +99,9 @@ public class CarSpawner : Singleton<CarSpawner>
                                 car.SetPosition(row, col);
                             }                         
                         }
-                        currentX += xSpacing;
+                        
                     }
+                    currentX += xSpacing;
                 }
 
                 float maxZSize = Mathf.Max(maxZSizeInColumn);
@@ -130,7 +131,7 @@ public class CarSpawner : Singleton<CarSpawner>
                     // Check if the position is occupied.
                     //if (!occupiedPositions[row, col])
                     //{
-                        int randomPercentage = UnityEngine.Random.Range(0, 101);
+                    int randomPercentage = UnityEngine.Random.Range(0, 101);
                     if (randomPercentage > carRandomSpawningRate)
                     {
                         int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
@@ -176,7 +177,6 @@ public class CarSpawner : Singleton<CarSpawner>
                 currentX += xSpacing;
             }
         }
-
     }
 
     public void ResetGame()
