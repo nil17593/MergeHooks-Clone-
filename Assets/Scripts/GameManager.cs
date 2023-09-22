@@ -107,6 +107,14 @@ public class GameManager : Singleton<GameManager>
         gameCashText.text = cash.ToString();
     }
 
+    public void DeductCoins(int amount)
+    {
+        int cash = PlayerPrefs.GetInt("Cash");
+        cash -= amount;
+        PlayerPrefs.SetInt("Cash", cash);
+        gameCashText.text = cash.ToString();
+    }
+
     #endregion
 
 
@@ -124,6 +132,7 @@ public class GameManager : Singleton<GameManager>
             hookBase.SetHookControllerLevel(HookLevel.ONE);
             hookContainer.levelText.text = ""+ ((int)hookBase.hookLevel);
             activeHooks.Add(hookBase);
+            DeductCoins(50);
             hookControllers.Add(hookBase.hookController);
             FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
         }
@@ -348,9 +357,6 @@ public class GameManager : Singleton<GameManager>
     {
         if (presentGameState == GameState.Merging)
         {
-
-            isThisLevelCleared = false;
-
             if (hookControllers.Count <= 0)
                 return;
             buttonPanel.SetActive(false);

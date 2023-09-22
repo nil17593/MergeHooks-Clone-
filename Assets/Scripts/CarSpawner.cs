@@ -104,7 +104,7 @@ public class CarSpawner : Singleton<CarSpawner>
                     currentX += xSpacing;
                 }
 
-                float maxZSize = Mathf.Max(maxZSizeInColumn);
+                float maxZSize = Mathf.Max(4);
                 currentX = startingPoint.position.x;
                 currentZ += maxZSize + xSpacing;
             }
@@ -163,7 +163,7 @@ public class CarSpawner : Singleton<CarSpawner>
                     currentX += xSpacing;
                 }
 
-                float maxZSize = Mathf.Max(maxZSizeInColumn);
+                float maxZSize = Mathf.Max(4);
                 currentX = startingPoint.position.x;
                 currentZ += maxZSize + xSpacing;
             }
@@ -181,6 +181,7 @@ public class CarSpawner : Singleton<CarSpawner>
 
     public void ResetGame()
     {
+        GameManager.Instance.isThisLevelCleared = false;
         Invoke(nameof(OnAllCarsPulled), 2f);
     }
 

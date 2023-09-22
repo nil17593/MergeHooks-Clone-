@@ -225,7 +225,7 @@ public class HookController : MonoBehaviour
 
     public void ReturnToBase()
     {
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, hookBase.transform.position + new Vector3(0, 0, 0.7f), 15f * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, hookBase.transform.position + new Vector3(0, 0, 0.7f), 35f * Time.deltaTime);
         transform.position = newPosition;
         ResetGame();
     }
