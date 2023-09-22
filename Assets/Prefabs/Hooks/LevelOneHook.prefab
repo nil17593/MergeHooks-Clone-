@@ -220,7 +220,7 @@ MonoBehaviour:
   duration: 0.5
   initialPosition: {x: 0, y: 0, z: 0}
   damage: 0
-  health: 100
+  health: 50
   canThrow: 0
   isReached: 0
   pullDone: 0

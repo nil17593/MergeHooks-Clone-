@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,7 +66,7 @@ public class CarSpawner : Singleton<CarSpawner>
             for (int row = 0; row < numRows; row++)
             {
                 for (int col = 0; col < numColumns; col++)
-                {           
+                {
                     // Check if the position is occupied.
                     if (!occupiedPositions[row, col])
                     {
@@ -76,17 +75,32 @@ public class CarSpawner : Singleton<CarSpawner>
                         int randomPercentage = UnityEngine.Random.Range(0, 101);
                         if (randomPercentage > carRandomSpawningRate)
                         {
-                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
-                            float zSize = GetZSizeOfObject(car);
-                            maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
-                            carsOnGrid.Add(car);
+                            if (row == 0)
+                            {
+                                CarController car = Instantiate(carPrefabs[0], spawnPosition, Quaternion.identity);
+                                float zSize = GetZSizeOfObject(car);
+                                maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                                carsOnGrid.Add(car);
 
-                            // Mark the position as occupied.
-                            occupiedPositions[row, col] = true;
-                            car.SetPosition(row, col);
+                                // Mark the position as occupied.
+                                occupiedPositions[row, col] = true;
+                                Debug.Log("IFFF  =" + occupiedPositions[row, col]);
+                                car.SetPosition(row, col);
+                            }
+                            else
+                            {
+                                CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                                float zSize = GetZSizeOfObject(car);
+                                maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                                carsOnGrid.Add(car);
+
+                                // Mark the position as occupied.
+                                occupiedPositions[row, col] = true;
+                                car.SetPosition(row, col);
+                            }                         
                         }
+                        currentX += xSpacing;
                     }
-                    currentX += xSpacing;
                 }
 
                 float maxZSize = Mathf.Max(maxZSizeInColumn);
@@ -121,14 +135,28 @@ public class CarSpawner : Singleton<CarSpawner>
                     {
                         int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
                         Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
-                        CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
-                        float zSize = GetZSizeOfObject(car);
-                        maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
-                        carsOnGrid.Add(car);
+                        if (row == 0)
+                        {
+                            CarController car = Instantiate(carPrefabs[0], spawnPosition, Quaternion.identity);
+                            float zSize = GetZSizeOfObject(car);
+                            maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                            carsOnGrid.Add(car);
 
-                        // Mark the position as occupied.
-                        occupiedPositions[row, col] = true;
-                        car.SetPosition(row, col);
+                            // Mark the position as occupied.
+                            occupiedPositions[row, col] = true;
+                            car.SetPosition(row, col);
+                        }
+                        else
+                        {
+                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                            float zSize = GetZSizeOfObject(car);
+                            maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
+                            carsOnGrid.Add(car);
+
+                            // Mark the position as occupied.
+                            occupiedPositions[row, col] = true;
+                            car.SetPosition(row, col);
+                        }
                     }
                     //}
                     currentX += xSpacing;

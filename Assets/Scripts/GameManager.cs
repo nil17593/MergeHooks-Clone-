@@ -303,7 +303,22 @@ public class GameManager : Singleton<GameManager>
 
     void PullThecars()
     {
+        Invoke(nameof(StartPullingCars), 1f);
         //yield return new WaitForSeconds(1f);
+        
+        //CarSpawner.Instance.ResetGame();
+        //hasCoroutineStarted = false;
+        //CarSpawner.Instance.SpawnCars();
+        //presentGameState = GameState.Merging;
+
+        //if (carControllers.Count <= 0)
+        //{
+        //    StartCoroutine(SpawnNewCars());
+        //}
+    }
+
+    void StartPullingCars()
+    {
         presentGameState = GameState.Pulling;
 
         foreach (CarController car in carControllers)
@@ -315,16 +330,8 @@ public class GameManager : Singleton<GameManager>
         {
             hook.canPull = true;
         }
-        //CarSpawner.Instance.ResetGame();
-        //hasCoroutineStarted = false;
-        //CarSpawner.Instance.SpawnCars();
-        //presentGameState = GameState.Merging;
-
-        //if (carControllers.Count <= 0)
-        //{
-        //    StartCoroutine(SpawnNewCars());
-        //}
     }
+
     public IEnumerator SpawnNewCars()
     {
         yield return new WaitForSeconds(2f);

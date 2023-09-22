@@ -33,6 +33,7 @@ public class HookController : MonoBehaviour
     #region Private Components
     private LineRenderer lineRenderer;
     private Rigidbody rb;
+    private int baseHealth;
     #endregion
 
     [SerializeField] private Transform hookBase;
@@ -41,13 +42,13 @@ public class HookController : MonoBehaviour
 
     private void Awake()
     {
-        health = 100;
         lineRenderer = GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
+        baseHealth = health;
         SetDamageBasedOnHookLevel(hookLevel);
     }
 
@@ -213,7 +214,7 @@ public class HookController : MonoBehaviour
 
     public void ResetGame()
     {
-        health = 100;
+        health = baseHealth;
     }
 
     //public void SetInitialPosition(Vector3 pos)
@@ -224,7 +225,7 @@ public class HookController : MonoBehaviour
 
     public void ReturnToBase()
     {
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, hookBase.transform.position + new Vector3(0, 0, 0.7f), 20f * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, hookBase.transform.position + new Vector3(0, 0, 0.7f), 15f * Time.deltaTime);
         transform.position = newPosition;
         ResetGame();
     }
