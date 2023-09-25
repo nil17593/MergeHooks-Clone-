@@ -97,6 +97,11 @@ public class GameManager : Singleton<GameManager>
         return PlayerPrefs.GetInt(LevelKey, 1);
     }
 
+    public int GetCash()
+    {
+        return PlayerPrefs.GetInt("Cash");
+    }
+
     #region UI Methods
 
     public void AddCash(int amount)
@@ -122,22 +127,24 @@ public class GameManager : Singleton<GameManager>
     //Spawn hooks on every button click for now there will be always level1 hook will instantiate
     public void SpawnHooks()
     {
-        if (hookContainers.Count > 0 && activeHooks.Count < hookContainers.Count)
-        {
-            HookContainer hookContainer = GetRandomHookContainer();
-            HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
-            hookBase.thisHookContainer = hookContainer;
-            hookContainer.isOccupied = true;
-            hookContainer.ActivateDeactivateLevelText(true);
-            hookBase.SetHookControllerLevel(HookLevel.ONE);
-            hookContainer.levelText.text = ""+ ((int)hookBase.hookLevel);
-            activeHooks.Add(hookBase);
-            DeductCoins(50);
-            hookControllers.Add(hookBase.hookController);
-            FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
-        }
+        //if (GetCash() > 50)
+        //{
+            if (hookContainers.Count > 0 && activeHooks.Count < hookContainers.Count)
+            {
+                HookContainer hookContainer = GetRandomHookContainer();
+                HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
+                hookBase.thisHookContainer = hookContainer;
+                hookContainer.isOccupied = true;
+                hookContainer.ActivateDeactivateLevelText(true);
+                hookBase.SetHookControllerLevel(HookLevel.ONE);
+                hookContainer.levelText.text = "" + ((int)hookBase.hookLevel);
+                activeHooks.Add(hookBase);
+                DeductCoins(50);
+                hookControllers.Add(hookBase.hookController);
+                FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
+            }
+        //}
     }
-
     //return random Hook Container to spawn the hooks on it
     public HookContainer GetRandomHookContainer()
     {
@@ -368,4 +375,5 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+    
 }

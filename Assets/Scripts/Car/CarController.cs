@@ -8,10 +8,11 @@ public class CarController : MonoBehaviour, IDamagable
     private  BoxCollider collider;
     public bool canPull = false;
     private int row, column;
-    
+    private Camera cam;
     private void Awake()
     {
         collider = GetComponent<BoxCollider>();
+        cam = Camera.main;
     }
 
     //private void OnEnable()
@@ -56,8 +57,10 @@ public class CarController : MonoBehaviour, IDamagable
             {
                 CarSpawner.Instance.carsOnGrid.Remove(this); 
             }
-            GameObject cash = Instantiate(UIController.Instance.cashPrefab, transform.position, UIController.Instance.cashPrefab.transform.rotation);
-            GameManager.Instance.AddCash(5);
+            Vector3 pos = cam.WorldToScreenPoint(transform.position);
+            GameObject cash = Instantiate(UIController.Instance.cashPrefab, pos , UIController.Instance.cashPrefab.transform.rotation,UIController.Instance.targetForCash.transform);
+
+            cash.GetComponent<CashAnimation>().MoveCoin(5);
             CarSpawner.Instance.occupiedPositions[row, column] = false;
             if (GameManager.Instance.carControllers.Contains(this))
             {
