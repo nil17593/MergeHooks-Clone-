@@ -64,6 +64,7 @@ public class CarSpawner : Singleton<CarSpawner>
 
         if (!GameManager.Instance.isThisLevelCleared)
         {
+            Debug.Log("IF");
             for (int row = 0; row < numRows; row++)
             {
                 for (int col = 0; col < numColumns; col++)
@@ -124,6 +125,47 @@ public class CarSpawner : Singleton<CarSpawner>
         }
         else
         {
+            List<CarController> carsToDestroy = new List<CarController>();
+
+            foreach (CarController car in carsOnGrid)
+            {
+                carsToDestroy.Add(car);
+            }
+
+            foreach (CarController car in carsToDestroy)
+            {
+                carsOnGrid.Remove(car);
+                Destroy(car.gameObject);
+            }
+            List<GameObject> giftsToDestroy = new List<GameObject>();
+
+            foreach (GameObject giftBox in giftBoxes)
+            {
+                giftsToDestroy.Add(giftBox);
+            }
+
+            foreach (GameObject giftBox in giftsToDestroy)
+            {
+                giftBoxes.Remove(giftBox);
+                Destroy(giftBox);
+            }
+
+            int numRows = occupiedPositions.GetLength(0);
+            int numColumns = occupiedPositions.GetLength(1);
+
+            for (int i = 0; i < numRows; i++)
+            {
+                for (int j = 0; j < numColumns; j++)
+                {
+                    occupiedPositions[i, j] = false;
+                }
+            }
+            carsOnGrid.Clear();
+            //Debug.Log("ASDD");
+            giftBoxes.Clear();
+            Debug.Log("else");
+            int currentLevel = GameManager.Instance.GetCurrentLevel();
+            GameManager.Instance.SetLevelText(currentLevel);
             for (int row = 0; row < numRows; row++)
             {
                 for (int col = 0; col < numColumns; col++)
@@ -177,46 +219,17 @@ public class CarSpawner : Singleton<CarSpawner>
                 currentX += xSpacing;
             }
         }
+        GameManager.Instance.isThisLevelCleared = false;
     }
 
     public void ResetGame()
     {
-        GameManager.Instance.isThisLevelCleared = false;
+        //GameManager.Instance.isThisLevelCleared = false;
         Invoke(nameof(OnAllCarsPulled), 2f);
     }
 
     void OnAllCarsPulled()
     {
-        if (GameManager.Instance.isThisLevelCleared)
-        {
-            List<CarController> carsToDestroy = new List<CarController>();
-
-            foreach (CarController car in carsOnGrid)
-            {
-                carsToDestroy.Add(car);
-            }
-
-            foreach (CarController car in carsToDestroy)
-            {
-                carsOnGrid.Remove(car);
-                Destroy(car);
-            }
-            List<GameObject> giftsToDestroy = new List<GameObject>();
-
-            foreach (GameObject giftBox in giftBoxes)
-            {
-                giftsToDestroy.Add(giftBox);
-            }
-
-            foreach (GameObject giftBox in giftsToDestroy)
-            {
-                giftBoxes.Remove(giftBox);
-                Destroy(giftBox);
-            }
-            carsOnGrid.Clear();
-            //Debug.Log("ASDD");
-            giftBoxes.Clear();
-        }
         SpawnCars();
         GameManager.Instance.presentGameState = GameManager.GameState.Merging;
     }

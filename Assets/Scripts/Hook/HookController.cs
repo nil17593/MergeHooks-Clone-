@@ -200,17 +200,13 @@ public class HookController : MonoBehaviour
             if (GameManager.Instance.CanStartTopull())
             {
                 GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
+                int currentLevel = GameManager.Instance.GetCurrentLevel();
+                int nextLevel = currentLevel + 1;
+                GameManager.Instance.SaveCurrentLevel(nextLevel);
             }
         }
     }
 
-    //GameManager.Instance.isThisLevelCleared = true;
-    //        if (GameManager.Instance.CanStartTopull())
-    //        {
-    //            GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
-    //            int currentLevel = GameManager.Instance.GetCurrentLevel();
-    //int nextLevel = currentLevel + 1;
-    //GameManager.Instance.SaveCurrentLevel(nextLevel);
 
     public void ResetGame()
     {

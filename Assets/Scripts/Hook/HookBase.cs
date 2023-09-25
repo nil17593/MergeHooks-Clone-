@@ -51,6 +51,7 @@ public class HookBase : MonoBehaviour
                     {
                         isThisHookSelected = true;
                         isDragging = true;
+                        UIController.Instance.ActivateSellHookPanel();
                         foreach (HookBase hook in GameManager.Instance.activeHooks)
                         {
                             if (hook.hookLevel == this.hookLevel)
@@ -69,6 +70,7 @@ public class HookBase : MonoBehaviour
         // Release the selected object when the left mouse button is released
         if (Input.GetMouseButtonUp(0))
         {
+            UIController.Instance.DeactivateHookPanel();
             if (isThisHookSelected)
             {
                 isThisHookSelected = false;
@@ -202,7 +204,7 @@ public class HookBase : MonoBehaviour
         hook = (HookLevel)currentEnumIndex;
         if (((int)hook) <= GameManager.Instance.hooks.Length)
         {
-            Vector3 pos = otherHook.thisHookContainer.transform.position+ new Vector3(0,0.8f,0);
+            Vector3 pos = otherHook.thisHookContainer.transform.position + new Vector3(0, 0.8f, 0);
             GameManager.Instance.AddMergedHook(hook, pos, otherHook.thisHookContainer);
         }
         thisHookContainer.isOccupied = false;
@@ -221,7 +223,7 @@ public class HookBase : MonoBehaviour
         {
             FollowCamera.Instance.hooks.Remove(this.transform);
         }
-        if (FollowCamera.Instance.hooks.Contains(otherHook.transform)) 
+        if (FollowCamera.Instance.hooks.Contains(otherHook.transform))
         {
             FollowCamera.Instance.hooks.Remove(otherHook.transform);
         }
@@ -239,4 +241,43 @@ public class HookBase : MonoBehaviour
         Destroy(gameObject);
     }
     #endregion
+
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("ShredderArea"))
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (GameManager.Instance.activeHooks.Contains(this))
+                {
+                    GameManager.Instance.activeHooks.Remove(this);
+                }
+                if (FollowCamera.Instance.hooks.Contains(this.transform))
+                {
+                    FollowCamera.Instance.hooks.Remove(this.transform);
+                }
+                if (GameManager.Instance.hookControllers.Contains(this.hookController))
+                {
+                    GameManager.Instance.hookControllers.Remove(this.hookController);
+                }
+                thisHookContainer.levelText.text = "";
+                thisHookContainer.isOccupied = false;
+                thisHookContainer.ActivateDeactivateLevelText(false);
+                foreach (HookBase hook in GameManager.Instance.activeHooks)
+                {
+                    if (hook.hookLevel == this.hookLevel)
+                    {
+                        hook.thisHookContainer.ResetColor();
+                    }
+                }
+                Vector3 pos = mainCamera.WorldToScreenPoint(transform.position);
+                GameObject cash = Instantiate(UIController.Instance.cashPrefab, pos, UIController.Instance.cashPrefab.transform.rotation, UIController.Instance.targetForCash.transform);
+
+                cash.GetComponent<CashAnimation>().MoveCoin(50);
+                //GameManager.Instance.AddCash(50);
+                Destroy(gameObject);
+            }
+        }
+    }
 }

@@ -102,6 +102,11 @@ public class GameManager : Singleton<GameManager>
         return PlayerPrefs.GetInt("Cash");
     }
 
+    public void SetLevelText(int currentLevel)
+    {
+        levelText.text = "LEVEL" + currentLevel.ToString();
+    }
+
     #region UI Methods
 
     public void AddCash(int amount)
@@ -354,8 +359,10 @@ public class GameManager : Singleton<GameManager>
 
         //if (carControllers.Count <= 0)
         //{
-            CarSpawner.Instance.ResetGame();
-            GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+        CarSpawner.Instance.ResetGame();
+        
+        GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+        isThisLevelCleared = false;
         //}
     }
     #endregion

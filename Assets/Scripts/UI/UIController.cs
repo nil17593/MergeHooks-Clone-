@@ -13,4 +13,17 @@ public class UIController : Singleton<UIController>
     private Vector3 initialPos;
     private Quaternion initialRotation;
     public RectTransform coin;
+    public GameObject sellHookPanel;
+
+
+    public void ActivateSellHookPanel()
+    {
+        sellHookPanel.SetActive(true);
+    }
+
+    public void DeactivateHookPanel()
+    {
+        sellHookPanel.SetActive(false);
+    }
 }
+
