@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using System;
 using CrazyGames;
+using DG.Tweening;
+using UnityEngine.UI;
 
 /// <summary>
 /// Gamemanager class handles spawning of Hooks and holds the list of HookContainers
@@ -18,8 +20,6 @@ public class GameManager : Singleton<GameManager>
     public List<CarController> carControllers = new List<CarController>();
     public GameObject buttonPanel;
     #endregion
-    public enum GameState { None, Merging, Throwing, Pulling, End };
-    public GameState presentGameState;
 
     #region Public booleans
     [Header("BOOLS")]
@@ -30,10 +30,14 @@ public class GameManager : Singleton<GameManager>
     public bool hasCoroutineStarted = false;
     public bool isThisLevelCleared = false;
     #endregion
+
     public static event Action StartCarPulling;
     public CrazyAdType adType;
     public HookContainer rewardAdHookBase;
-    
+    public HookBase doubleDamageHook;
+    public enum GameState { None, Merging, Throwing, Pulling, End };
+    public GameState presentGameState;
+
     #region Playerprefs
     private const string LevelKey = "CurrentLevel";
     #endregion
@@ -41,6 +45,7 @@ public class GameManager : Singleton<GameManager>
     #region UI
     [SerializeField] private TextMeshProUGUI gameCashText;
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private GameObject doubleDamagePanel;
     #endregion
 
 
@@ -142,7 +147,7 @@ public class GameManager : Singleton<GameManager>
         adType = CrazyAdType.hookrewarded;
         if (adType == CrazyAdType.hookrewarded)
         {
-            CrazyAds.Instance.beginAdBreakRewardedCoin(AddRewardedHook);
+            CrazyAds.Instance.beginAdBreakRewardedHoook(AddRewardedHook);
         }
     }
 
@@ -150,9 +155,13 @@ public class GameManager : Singleton<GameManager>
     {
         HookLevel level;
         int hookLevel = GetHookLevel();
+        Debug.Log("LASD+==  " + hookLevel);
         level = (HookLevel)hookLevel;
         HookContainer hookContainer = GetRandomHookContainer();
-        AddMergedHook(level, hookContainer.transform.position + new Vector3(0, 0.8f, 0), hookContainer);
+        if (hookContainer != null && hookLevel >= 2)
+        {
+            InstantiateGivenLevelHook(level, hookContainer.transform.position + new Vector3(0, 0.8f, 0), hookContainer);
+        }
     }
 
     public void AddRewardedCoins()
@@ -200,6 +209,30 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
+    public int GetHighestHookLevel()
+    {
+        int level = 0;
+        foreach (HookBase hook in activeHooks)
+        {
+            if (((int)hook.hookLevel) > level)
+            {
+                level = ((int)hook.hookLevel);
+            }
+        }
+        return level;
+    }
+
+    public void GetExtraDamageButtonPressed()
+    {
+        CrazyAds.Instance.beginAdBreakRewardedDamage(doubleDamageHook.hookController.DoubleDamage);
+        doubleDamagePanel.SetActive(false);
+    }
+
+    public void OnContinueButtonPresed()
+    {
+        doubleDamagePanel.SetActive(false);
+    }
     #endregion
 
 
@@ -254,6 +287,23 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    public void InstantiateGivenLevelHook(HookLevel hookLevel, Vector3 pos, HookContainer parent)
+    {
+        HookBase hook = Instantiate(hooks[((int)hookLevel)-1], pos,Quaternion.identity, parent.transform);
+        hook.thisHookContainer = parent;
+        int i = GetHighestHookLevel();
+        if ((int)hookLevel > i)
+        {
+            doubleDamageHook = hook;
+            doubleDamagePanel.SetActive(true);
+        }
+        activeHooks.Add(hook);
+        parent.isOccupied = true;
+        hook.SetHookControllerLevel(hookLevel);
+        hookControllers.Add(hook.hookController);
+        parent.ActivateDeactivateLevelText(true);
+        parent.levelText.text = "" + ((int)hook.hookLevel);
+    }
 
     #region Switch case for Instantiate Merged Hooks
     //switch case to instantiate merged Hooks it will take level of hook, position and HookContainer
@@ -263,7 +313,7 @@ public class GameManager : Singleton<GameManager>
         {
             case HookLevel.TWO:
                 HookBase hook2 = Instantiate(hooks[1], pos, Quaternion.identity, parent.transform);
-                hook2.thisHookContainer = parent;
+                hook2.thisHookContainer = parent;              
                 activeHooks.Add(hook2);
                 parent.isOccupied = true;
                 hook2.SetHookControllerLevel(HookLevel.TWO);
@@ -362,7 +412,7 @@ public class GameManager : Singleton<GameManager>
                 break;
 
             default:
-                hookLevel = HookLevel.None;
+                hookLevel = HookLevel.ONE;
                 break;
         }
     }

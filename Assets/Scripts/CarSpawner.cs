@@ -64,7 +64,6 @@ public class CarSpawner : Singleton<CarSpawner>
 
         if (!GameManager.Instance.isThisLevelCleared)
         {
-            Debug.Log("IF");
             for (int row = 0; row < numRows; row++)
             {
                 for (int col = 0; col < numColumns; col++)

@@ -52,6 +52,10 @@ public class HookController : MonoBehaviour
         SetDamageBasedOnHookLevel(hookLevel);
     }
 
+    public void DoubleDamage()
+    {
+        damage *= 2;
+    }
 
     public void SetDamageBasedOnHookLevel(HookLevel hookLevel)
     {

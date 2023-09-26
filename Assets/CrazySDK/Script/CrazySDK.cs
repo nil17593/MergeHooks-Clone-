@@ -13,7 +13,8 @@ namespace CrazyGames
         midgame,
         rewarded,
         coinrewarded,
-        hookrewarded
+        hookrewarded,
+        extraDamageRewarded
     }
 
     public enum CrazySDKEvent
