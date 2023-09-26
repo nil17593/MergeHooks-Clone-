@@ -73,6 +73,12 @@ namespace CrazyGames
             beginAdBreak(completedCallback, errorCallback, CrazyAdType.coinrewarded);
         }
 
+        public void beginAdBreakRewardedHoook(AdBreakCompletedCallback completedCallback = null,
+           AdErrorCallback errorCallback = null)
+        {
+            beginAdBreak(completedCallback, errorCallback, CrazyAdType.hookrewarded);
+        }
+
         public void beginAdBreak(AdBreakCompletedCallback completedCallback = null, AdErrorCallback errorCallback = null,
             CrazyAdType adType = CrazyAdType.midgame)
         {

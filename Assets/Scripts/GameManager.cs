@@ -32,6 +32,7 @@ public class GameManager : Singleton<GameManager>
     #endregion
     public static event Action StartCarPulling;
     public CrazyAdType adType;
+    public HookContainer rewardAdHookBase;
     
     #region Playerprefs
     private const string LevelKey = "CurrentLevel";
@@ -136,6 +137,24 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void OnGetHookRewardButtonPressed()
+    {
+        adType = CrazyAdType.hookrewarded;
+        if (adType == CrazyAdType.hookrewarded)
+        {
+            CrazyAds.Instance.beginAdBreakRewardedCoin(AddRewardedHook);
+        }
+    }
+
+    public void AddRewardedHook()
+    {
+        HookLevel level;
+        int hookLevel = GetHookLevel();
+        level = (HookLevel)hookLevel;
+        HookContainer hookContainer = GetRandomHookContainer();
+        AddMergedHook(level, hookContainer.transform.position + new Vector3(0, 0.8f, 0), hookContainer);
+    }
+
     public void AddRewardedCoins()
     {
         int cash = PlayerPrefs.GetInt("Cash");
@@ -146,7 +165,40 @@ public class GameManager : Singleton<GameManager>
         gameCashText.text = cash.ToString();
     }
 
+    public HookContainer GetEmptyHookContainer()
+    {
+        foreach(HookContainer hook in hookContainers)
+        {
+            if (!hook.isOccupied)
+            {
+                rewardAdHookBase = hook;
+                return hook;
+            }
+        }
+        return null;
+    }
 
+
+    //
+    public int GetHookLevel()
+    {
+        int level = 0;
+        foreach(HookBase hook in activeHooks)
+        {
+            if (((int)hook.hookLevel) > level)
+            {
+                level = ((int)hook.hookLevel);
+            }
+        }
+        if (level >= 2)
+        {
+            return level - 1;
+        }
+        else
+        {
+            return -1; 
+        }
+    }
 
     #endregion
 
