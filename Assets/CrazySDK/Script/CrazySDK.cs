@@ -11,7 +11,9 @@ namespace CrazyGames
     public enum CrazyAdType
     {
         midgame,
-        rewarded
+        rewarded,
+        coinrewarded,
+        hookrewarded
     }
 
     public enum CrazySDKEvent

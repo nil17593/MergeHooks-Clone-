@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using CrazyGames;
 
 /// <summary>
 /// Gamemanager class handles spawning of Hooks and holds the list of HookContainers
@@ -30,6 +31,7 @@ public class GameManager : Singleton<GameManager>
     public bool isThisLevelCleared = false;
     #endregion
     public static event Action StartCarPulling;
+    public CrazyAdType adType;
     
     #region Playerprefs
     private const string LevelKey = "CurrentLevel";
@@ -124,6 +126,27 @@ public class GameManager : Singleton<GameManager>
         PlayerPrefs.SetInt("Cash", cash);
         gameCashText.text = cash.ToString();
     }
+
+    public void OnCoinRewardButtonPressed()
+    {
+        adType = CrazyAdType.coinrewarded;
+        if (adType == CrazyAdType.coinrewarded)
+        {
+            CrazyAds.Instance.beginAdBreakRewardedCoin(AddRewardedCoins);
+        }
+    }
+
+    public void AddRewardedCoins()
+    {
+        int cash = PlayerPrefs.GetInt("Cash");
+        int currentAmount = GetComponent<EnableDisableGameObject>().currentAmount;
+        cash += currentAmount;
+        PlayerPrefs.SetInt("Cash", cash);
+        PlayerPrefs.Save();
+        gameCashText.text = cash.ToString();
+    }
+
+
 
     #endregion
 
