@@ -135,20 +135,12 @@ public class GameManager : Singleton<GameManager>
 
     public void OnCoinRewardButtonPressed()
     {
-        adType = CrazyAdType.coinrewarded;
-        if (adType == CrazyAdType.coinrewarded)
-        {
-            CrazyAds.Instance.beginAdBreakRewardedCoin(AddRewardedCoins);
-        }
+        AdManager.Instance.ShowRewarded(CrazyAdType.coinrewarded);
     }
 
     public void OnGetHookRewardButtonPressed()
     {
-        adType = CrazyAdType.hookrewarded;
-        if (adType == CrazyAdType.hookrewarded)
-        {
-            CrazyAds.Instance.beginAdBreakRewardedHoook(AddRewardedHook);
-        }
+        AdManager.Instance.ShowRewarded(CrazyAdType.hookrewarded);
     }
 
     public void AddRewardedHook()
@@ -223,9 +215,14 @@ public class GameManager : Singleton<GameManager>
         return level;
     }
 
-    public void GetExtraDamageButtonPressed()
+    public void OnGetDoubleDamageButtonPressed()
     {
-        CrazyAds.Instance.beginAdBreakRewardedDamage(doubleDamageHook.hookController.DoubleDamage);
+        AdManager.Instance.ShowRewarded(CrazyAdType.extraDamageRewarded);
+    }
+
+    public void GetDoubleDamageReward()
+    {
+        doubleDamageHook.hookController.DoubleDamage();
         doubleDamagePanel.SetActive(false);
     }
 
@@ -258,6 +255,7 @@ public class GameManager : Singleton<GameManager>
             }
         //}
     }
+
     //return random Hook Container to spawn the hooks on it
     public HookContainer GetRandomHookContainer()
     {
@@ -292,10 +290,13 @@ public class GameManager : Singleton<GameManager>
         HookBase hook = Instantiate(hooks[((int)hookLevel)-1], pos,Quaternion.identity, parent.transform);
         hook.thisHookContainer = parent;
         int i = GetHighestHookLevel();
-        if ((int)hookLevel > i)
+        if (i >= 2)
         {
-            doubleDamageHook = hook;
-            doubleDamagePanel.SetActive(true);
+            if ((int)hookLevel > i)
+            {
+                doubleDamageHook = hook;
+                doubleDamagePanel.SetActive(true);
+            }
         }
         activeHooks.Add(hook);
         parent.isOccupied = true;
