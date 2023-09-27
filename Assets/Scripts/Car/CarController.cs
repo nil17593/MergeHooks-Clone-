@@ -59,13 +59,14 @@ public class CarController : MonoBehaviour, IDamagable
                 CarSpawner.Instance.carsOnGrid.Remove(this);
             }
             isreachedToShrederArea = true;
-            transform.DORotate(new Vector3(-90, 0, 0), 2f).OnComplete(() =>
+            transform.DORotate(new Vector3(-90, 0, 0), 1.5f).OnComplete(() =>
             {
                 Vector3 pos = cam.WorldToScreenPoint(transform.position);
                 GameObject cash = Instantiate(UIController.Instance.cashPrefab, pos, UIController.Instance.cashPrefab.transform.rotation, UIController.Instance.targetForCash.transform);
-                transform.DOMoveY(-0.50f, .2f);
 
                 cash.GetComponent<CashAnimation>().MoveCoin(5);
+                transform.DOMoveY(-0.50f, .2f);
+
                 CarSpawner.Instance.occupiedPositions[row, column] = false;
                 if (GameManager.Instance.carControllers.Contains(this))
                 {
