@@ -15,8 +15,18 @@ public class UIController : Singleton<UIController>
     public RectTransform coin;
     public GameObject sellHookPanel;
 
+    [SerializeField] private RectTransform levelClearPanel;
 
-    public void ActivateSellHookPanel()
+
+
+    public void ShowLevelClearPopup()
+    {
+        levelClearPanel.DOAnchorPos(Vector3.zero, .5f).SetEase(Ease.InOutElastic).OnComplete(() =>
+        {
+            levelClearPanel.DOAnchorPos(new Vector2(-2000, 0), 0.5f).SetDelay(1);
+        });
+    }
+        public void ActivateSellHookPanel()
     {
         sellHookPanel.SetActive(true);
     }

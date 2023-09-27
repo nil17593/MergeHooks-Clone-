@@ -201,6 +201,7 @@ public class HookController : MonoBehaviour
         {
             isReached = true;
             GameManager.Instance.isThisLevelCleared = true;
+            UIController.Instance.ShowLevelClearPopup();
             if (GameManager.Instance.CanStartTopull())
             {
                 GameManager.Instance.presentGameState = GameManager.GameState.Pulling;
