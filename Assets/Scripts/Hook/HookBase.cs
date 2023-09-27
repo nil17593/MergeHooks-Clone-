@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// HookBase class attached on the Base of the hook 
@@ -155,6 +154,7 @@ public class HookBase : MonoBehaviour
 
                 //other hook settings
                 otherHook.transform.position = thisHooksPos;
+                otherHook.transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
                 otherHook.thisHookContainer = hookContainerForOtherHook;
                 otherHook.transform.SetParent(otherHook.thisHookContainer.transform);
                 otherHook.SetCurrentPosition(otherHook.transform.position);
@@ -164,6 +164,7 @@ public class HookBase : MonoBehaviour
                 //otherHook.hookController.SetInitialPosition(otherHook.hookController.transform.position);
                 //this hook settings
                 transform.position = otherHooksPos;
+                transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
                 thisHookContainer = hookContainerForThisHook;
                 transform.SetParent(hookContainerForThisHook.transform);
                 hookController.hookLevel = this.hookLevel;
@@ -178,6 +179,7 @@ public class HookBase : MonoBehaviour
                 thisHookContainer.ActivateDeactivateLevelText(false);
                 thisHookContainer.isOccupied = false;
                 transform.position = hittingHookContainer.transform.position + new Vector3(0, 0.8f, 0);
+                //transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
                 transform.SetParent(hittingHookContainer.transform);
                 thisHookContainer = hittingHookContainer;
                 hookController.hookLevel = hookLevel;

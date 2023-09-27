@@ -12,6 +12,7 @@ public class EnableDisableGameObject : MonoBehaviour
     public int claimedAmount=1;
     public int currentAmount = 500;
     public int baseAmount = 250;
+    public TextMeshProUGUI hookLevelText;
 
     public float enableDuration = 5f;  // Time in seconds for which the object will be enabled
     public float cycleTime = 10f; // Total time in seconds for one cycle (enable + disable)
@@ -50,6 +51,8 @@ public class EnableDisableGameObject : MonoBehaviour
 
     private IEnumerator EnableDisableRoutine()
     {
+        int hookLevel = GameManager.Instance.GetHookLevel();
+        hookLevelText.text = "LEVEL " + hookLevel.ToString();
         while (true)
         {
             scaleTween = targetGameObject.transform.DOScale(originalScale * punchScaleMagnitude, punchScaleDuration)
@@ -70,6 +73,8 @@ public class EnableDisableGameObject : MonoBehaviour
     private IEnumerator UpdateTimerImage()
     {
         curTime = 0;
+        int hookLevel = GameManager.Instance.GetHookLevel();
+        hookLevelText.text = "LEVEL " + hookLevel.ToString();
         while (curTime <= enableDuration)
         {
             curTime += Time.deltaTime;
@@ -80,7 +85,6 @@ public class EnableDisableGameObject : MonoBehaviour
                 claimedAmount++;
                 currentAmount = claimedAmount * baseAmount;
                 amount.text = "+" + currentAmount + "";
-
             }
             yield return null;
         }

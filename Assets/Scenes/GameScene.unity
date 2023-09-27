@@ -262,6 +262,7 @@ MonoBehaviour:
   claimedAmount: 1
   currentAmount: 500
   baseAmount: 250
+  hookLevelText: {fileID: 1249445360}
   enableDuration: 5
   cycleTime: 10
   punchScaleMagnitude: 1.2
@@ -3250,7 +3251,7 @@ GameObject:
   - component: {fileID: 639080811}
   - component: {fileID: 639080813}
   m_Layer: 5
-  m_Name: HookButton
+  m_Name: RewardHookButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6346,7 +6347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1249445359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9974,6 +9975,7 @@ MonoBehaviour:
   coin: {fileID: 8306392681336556355, guid: 4df8e27bf981d854d8e1fdb0ececd773, type: 3}
   sellHookPanel: {fileID: 731856586}
   levelClearPanel: {fileID: 1213026845}
+  hookLevelText: {fileID: 0}
 --- !u!4 &2052353470
 Transform:
   m_ObjectHideFlags: 0
@@ -10007,6 +10009,7 @@ MonoBehaviour:
   claimedAmount: 1
   currentAmount: 500
   baseAmount: 250
+  hookLevelText: {fileID: 1249445360}
   enableDuration: 5
   cycleTime: 10
   punchScaleMagnitude: 1.2

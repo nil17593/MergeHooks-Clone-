@@ -239,20 +239,21 @@ public class GameManager : Singleton<GameManager>
     {
         //if (GetCash() > 50)
         //{
-            if (hookContainers.Count > 0 && activeHooks.Count < hookContainers.Count)
-            {
-                HookContainer hookContainer = GetRandomHookContainer();
-                HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
-                hookBase.thisHookContainer = hookContainer;
-                hookContainer.isOccupied = true;
-                hookContainer.ActivateDeactivateLevelText(true);
-                hookBase.SetHookControllerLevel(HookLevel.ONE);
-                hookContainer.levelText.text = "" + ((int)hookBase.hookLevel);
-                activeHooks.Add(hookBase);
-                DeductCoins(50);
-                hookControllers.Add(hookBase.hookController);
-                FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
-            }
+        if (hookContainers.Count > 0 && activeHooks.Count < hookContainers.Count)
+        {
+            HookContainer hookContainer = GetRandomHookContainer();
+            HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
+            hookBase.transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
+            hookBase.thisHookContainer = hookContainer;
+            hookContainer.isOccupied = true;
+            hookContainer.ActivateDeactivateLevelText(true);
+            hookBase.SetHookControllerLevel(HookLevel.ONE);
+            hookContainer.levelText.text = "" + ((int)hookBase.hookLevel);
+            activeHooks.Add(hookBase);
+            DeductCoins(50);
+            hookControllers.Add(hookBase.hookController);
+            FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
+        }
         //}
     }
 
@@ -288,6 +289,7 @@ public class GameManager : Singleton<GameManager>
     public void InstantiateGivenLevelHook(HookLevel hookLevel, Vector3 pos, HookContainer parent)
     {
         HookBase hook = Instantiate(hooks[((int)hookLevel)-1], pos,Quaternion.identity, parent.transform);
+        hook.transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
         hook.thisHookContainer = parent;
         int i = GetHighestHookLevel();
         if (i >= 2)
