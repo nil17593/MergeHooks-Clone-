@@ -53,7 +53,7 @@ public class FollowCamera : Singleton<FollowCamera>
 
     public void ReturnToBase()
     {
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, initialPos, 20f * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, initialPos, 25f * Time.deltaTime);
         transform.position = newPosition;
     }
 

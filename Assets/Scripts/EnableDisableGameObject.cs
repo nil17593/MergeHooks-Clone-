@@ -7,6 +7,7 @@ using TMPro;
 public class EnableDisableGameObject : MonoBehaviour
 {
     public GameObject targetGameObject;
+    public GameObject targetGameObject2;
     public Image timerImage;
     public TextMeshProUGUI amount;
     public int claimedAmount=1;
@@ -47,16 +48,28 @@ public class EnableDisableGameObject : MonoBehaviour
         // Punch scale loop
         scaleTween = targetGameObject.transform.DOScale(originalScale * punchScaleMagnitude, punchScaleDuration)
         .SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
+
+        scaleTween = targetGameObject2.transform.DOScale(originalScale * punchScaleMagnitude, punchScaleDuration)
+        .SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
     }
 
     private IEnumerator EnableDisableRoutine()
     {
-        int hookLevel = GameManager.Instance.GetHookLevel();
-        hookLevelText.text = "LEVEL " + hookLevel.ToString();
         while (true)
         {
             scaleTween = targetGameObject.transform.DOScale(originalScale * punchScaleMagnitude, punchScaleDuration)
        .SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
+            if (targetGameObject2.activeSelf)
+            {
+                scaleTween = targetGameObject2.transform.DOScale(originalScale * punchScaleMagnitude, punchScaleDuration)
+           .SetEase(Ease.OutBounce).SetLoops(-1, LoopType.Yoyo);
+            }
+            int hookLevel = GameManager.Instance.GetHookLevel();
+            if (hookLevel >= 2 && GameManager.Instance.presentGameState == GameManager.GameState.Merging)
+            {
+                targetGameObject2.SetActive(true);
+                hookLevelText.text = "LEVEL " + hookLevel.ToString();
+            }
             targetGameObject.SetActive(true);
             timerRoutine = StartCoroutine(UpdateTimerImage());
            
@@ -74,7 +87,10 @@ public class EnableDisableGameObject : MonoBehaviour
     {
         curTime = 0;
         int hookLevel = GameManager.Instance.GetHookLevel();
-        hookLevelText.text = "LEVEL " + hookLevel.ToString();
+        if (hookLevel >= 2)
+        {
+            hookLevelText.text = "LEVEL " + hookLevel.ToString();
+        }
         while (curTime <= enableDuration)
         {
             curTime += Time.deltaTime;
@@ -82,6 +98,7 @@ public class EnableDisableGameObject : MonoBehaviour
             if (curTime >= enableDuration)
             {
                 targetGameObject.SetActive(false);
+                targetGameObject2.SetActive(false);
                 claimedAmount++;
                 currentAmount = claimedAmount * baseAmount;
                 amount.text = "+" + currentAmount + "";
