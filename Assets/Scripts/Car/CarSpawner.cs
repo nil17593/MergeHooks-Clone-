@@ -66,7 +66,7 @@ public class CarSpawner : Singleton<CarSpawner>
         maxZSizeInColumn = new float[numColumns];
         float currentX = startingPoint.position.x;
         float currentZ = startingPoint.position.z;
-
+        float y = startingPoint.position.y;
         if (!GameManager.Instance.isThisLevelCleared)
         {
             for (int row = 0; row < numRows; row++)
@@ -77,7 +77,7 @@ public class CarSpawner : Singleton<CarSpawner>
                     if (!occupiedPositions[row, col])
                     {
                         int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
-                        Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
+                        Vector3 spawnPosition = new Vector3(currentX, y, currentZ);
                         int randomPercentage = UnityEngine.Random.Range(0, 101);
                         if (randomPercentage > carRandomSpawningRate)
                         {
@@ -121,7 +121,7 @@ public class CarSpawner : Singleton<CarSpawner>
                 {
                     int prefabIndex = col % giftPrefabs.Count;
 
-                    GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, 0.8f, additionalRowStartZ), Quaternion.identity);
+                    GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, y, additionalRowStartZ), Quaternion.identity);
                     giftBoxes.Add(giftBox);
                     currentX += xSpacing;
                 }
@@ -218,7 +218,7 @@ public class CarSpawner : Singleton<CarSpawner>
             {
                 int prefabIndex = col % giftPrefabs.Count;
 
-                GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, 0.8f, additionalRowStartZ), Quaternion.identity);
+                GameObject giftBox = Instantiate(giftPrefabs[prefabIndex], new Vector3(currentX, y, additionalRowStartZ), Quaternion.identity);
                 giftBoxes.Add(giftBox);
                 currentX += xSpacing;
             }
