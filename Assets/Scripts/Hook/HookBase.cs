@@ -124,6 +124,7 @@ public class HookBase : MonoBehaviour
         hookController.canThrow = true;
         hookController.isReached = false;
         hookController.canPull = false;
+        SoundManager.Instance.Play(Sounds.HookThrow);
     }
 
     #region Hook Merging 

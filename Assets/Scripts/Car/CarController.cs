@@ -66,6 +66,7 @@ public class CarController : MonoBehaviour, IDamagable
             {
                 GameManager.Instance.carControllers.Remove(this);
             }
+            //SoundManager.Instance.Play(Sounds.CarCrush);
             OnCarPulled();
             Destroy(gameObject);
         }
