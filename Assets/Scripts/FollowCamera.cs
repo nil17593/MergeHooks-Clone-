@@ -28,7 +28,7 @@ public class FollowCamera : Singleton<FollowCamera>
 
             foreach (HookController hookController in GameManager.Instance.hookControllers)
             {
-                if (!hookController.isReached) // Implement IsMoving() as needed
+                if (!hookController.isReached)
                 {
                     float zPosition = hookController.transform.position.z;
                     if (zPosition > farthestZ)
