@@ -5,47 +5,61 @@ public class FollowCamera : Singleton<FollowCamera>
 {
     public List<Transform> hooks = new List<Transform>();
     public float followSpeed = 5.0f; // Adjust this to control camera follow speed
-    public float viewportThreshold = 0.8f; // The threshold when camera should start following
+    public float viewportThreshold = 0.8f; // The threshold when the camera should start following
 
     private Transform target;
     private Camera mainCamera;
     private Vector3 initialPos;
+
     private void Start()
     {
         initialPos = transform.position;
         mainCamera = Camera.main;
+        target = null; // Initialize the target to null
     }
 
     private void LateUpdate()
     {
         if (GameManager.Instance.presentGameState == GameManager.GameState.Throwing)
         {
-            // Find the closest GameObject to the camera's current position
-            Transform closestObject = GameManager.Instance.hookControllers[0].transform;
-            float closestDistance = Mathf.Abs(transform.position.z - closestObject.position.z);
+            // Find the moving hook that is farthest ahead
+            Transform movingHook = null;
+            float farthestZ = float.MinValue;
 
-            foreach (HookController go in GameManager.Instance.hookControllers)
+            foreach (HookController hookController in GameManager.Instance.hookControllers)
             {
-                float distance = Mathf.Abs(transform.position.z - go.transform.position.z);
-                if (distance < closestDistance)
+                if (!hookController.isReached) // Implement IsMoving() as needed
                 {
-                    closestObject = go.transform;
-                    closestDistance = distance;
+                    float zPosition = hookController.transform.position.z;
+                    if (zPosition > farthestZ)
+                    {
+                        movingHook = hookController.transform;
+                        farthestZ = zPosition;
+                    }
                 }
             }
 
-            // Calculate the threshold distance based on the camera's viewport
-            float thresholdDistance = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, viewportThreshold, closestObject.position.z - mainCamera.transform.position.z)).z;
-
-            // Only move the camera when the target object goes outside of the viewport
-            if (closestObject.position.z > thresholdDistance)
+            if (movingHook != null)
             {
-                // Smoothly move the CameraController to the target's position
-                Vector3 targetPosition = new Vector3(transform.position.x, transform.position.y, closestObject.position.z);
+                // Calculate the threshold distance based on the camera's viewport
+                float thresholdDistance = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, viewportThreshold, movingHook.position.z - mainCamera.transform.position.z)).z;
+
+                // Only move the camera when the moving hook goes outside of the viewport
+                if (movingHook.position.z > thresholdDistance)
+                {
+                    // Set the moving hook as the target
+                    target = movingHook;
+                }
+            }
+
+            // Follow the target (moving hook)
+            if (target != null)
+            {
+                Vector3 targetPosition = new Vector3(transform.position.x, transform.position.y, target.position.z);
                 transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
             }
         }
-        if(GameManager.Instance.presentGameState == GameManager.GameState.Pulling)
+        else if (GameManager.Instance.presentGameState == GameManager.GameState.Pulling)
         {
             ReturnToBase();
         }
@@ -56,21 +70,4 @@ public class FollowCamera : Singleton<FollowCamera>
         Vector3 newPosition = Vector3.MoveTowards(transform.position, initialPos, 25f * Time.deltaTime);
         transform.position = newPosition;
     }
-
-
-    //public List<Transform> gameObjects = new List<Transform>();
-    //public float followSpeed = 5.0f; // Adjust this to control camera follow speed
-
-    //private Transform target; // The target to follow
-
-    //private void Start()
-    //{
-    //    // Initially, follow the first GameObject
-    //    //target = gameObjects[0];
-    //}
-
-    //private void Update()
-    //{
-
-    //}
 }

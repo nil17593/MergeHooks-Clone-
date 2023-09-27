@@ -143,6 +143,12 @@ public class GameManager : Singleton<GameManager>
         AdManager.Instance.ShowRewarded(CrazyAdType.hookrewarded);
     }
 
+    public void OnContinueWithoutSpinButtonPressed()
+    {
+        UIController.Instance.ResetShowLevelClearPopup();
+        CarSpawner.Instance.SpawnNewCars();
+    }
+
     public void AddRewardedHook()
     {
         HookLevel level;

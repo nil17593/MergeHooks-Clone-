@@ -56,6 +56,11 @@ public class CarSpawner : Singleton<CarSpawner>
         OnCarsPulled -= ResetGame;
     }
 
+    public void SpawnNewCars()
+    {
+        SpawnCars();
+    }
+
     void SpawnCars()
     {
         maxZSizeInColumn = new float[numColumns];
@@ -229,8 +234,16 @@ public class CarSpawner : Singleton<CarSpawner>
 
     void OnAllCarsPulled()
     {
-        SpawnCars();
-        GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+        if (GameManager.Instance.isThisLevelCleared)
+        {
+            UIController.Instance.ShowLevelClearPopup();
+            GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+        }
+        else
+        {
+            SpawnCars();
+            GameManager.Instance.presentGameState = GameManager.GameState.Merging;
+        }
     }
 
     int CalculateNumberOfCarsToSpawn(int gridSize, int randomPercentage)

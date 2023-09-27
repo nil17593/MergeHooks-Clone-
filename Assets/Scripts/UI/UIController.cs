@@ -21,14 +21,19 @@ public class UIController : Singleton<UIController>
 
     public void ShowLevelClearPopup()
     {
-        levelClearPanel.DOAnchorPos(Vector3.zero, .5f).SetEase(Ease.InOutElastic).OnComplete(() =>
-        {
-            levelClearPanel.DOAnchorPos(new Vector2(-2000, 0), 0.5f).SetDelay(1);
-        });
+        levelClearPanel.DOAnchorPos(Vector2.zero, .5f).SetEase(Ease.InOutElastic);//.OnComplete(() =>
+        //{
+            //levelClearPanel.DOAnchorPos(new Vector2(-2000, 0), 0.5f).SetDelay(1);
+        //});
     }
-        public void ActivateSellHookPanel()
+    public void ActivateSellHookPanel()
     {
         sellHookPanel.SetActive(true);
+    }
+
+    public void ResetShowLevelClearPopup()
+    {
+        levelClearPanel.DOAnchorPos(new Vector2(-2000,0), .5f).SetEase(Ease.InOutElastic);
     }
 
     public void DeactivateHookPanel()
