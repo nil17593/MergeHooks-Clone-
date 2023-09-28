@@ -89,7 +89,7 @@ public class HookBase : MonoBehaviour
         if (isDragging)
         {
             Vector3 targetPos = GetMouseWorldPos() + offset;
-            targetPos.y = 1f;
+            targetPos.y = -0.9f;
             transform.position = targetPos;
         }
     }
