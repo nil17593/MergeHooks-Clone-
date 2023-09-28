@@ -65,17 +65,18 @@ public class CarController : MonoBehaviour, IDamagable
                 GameObject cash = Instantiate(UIController.Instance.cashPrefab, pos, UIController.Instance.cashPrefab.transform.rotation, UIController.Instance.targetForCash.transform);
 
                 cash.GetComponent<CashAnimation>().MoveCoin(5);
-                transform.DOMoveY(-0.50f, .2f);
-
-                CarSpawner.Instance.occupiedPositions[row, column] = false;
-                if (GameManager.Instance.carControllers.Contains(this))
+                transform.DOMoveY(-0.50f, .2f).OnComplete(() =>
                 {
-                    GameManager.Instance.carControllers.Remove(this);
-                }               
-                OnCarPulled();
-                Destroy(gameObject);
+
+                    CarSpawner.Instance.occupiedPositions[row, column] = false;
+                    if (GameManager.Instance.carControllers.Contains(this))
+                    {
+                        GameManager.Instance.carControllers.Remove(this);
+                    }
+                    OnCarPulled();
+                    Destroy(gameObject);
+                });
             });
-           
         }
     }
 

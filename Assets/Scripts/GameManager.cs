@@ -12,13 +12,16 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : Singleton<GameManager>
 {
+    [Header("Gameplay Settings")]
     #region public lists and arrays
     public List<HookBase> activeHooks = new List<HookBase>();
     public List<HookContainer> hookContainers = new List<HookContainer>();
     public HookBase[] hooks;
     public List<HookController> hookControllers = new List<HookController>();
     public List<CarController> carControllers = new List<CarController>();
+    public List<HookContainer> inactiveHookContainers = new List<HookContainer>();
     public GameObject buttonPanel;
+    public int offsetForHookLevelToinstantiate;
     #endregion
 
     #region Public booleans
@@ -51,6 +54,26 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        if (inactiveHookContainers.Count > 0)
+        {
+            foreach (HookContainer hookContainer in inactiveHookContainers)
+            {
+                if (hookContainer.isActiveAndEnabled)
+                {
+                    hookContainer.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        if (!PlayerPrefs.HasKey("Cash"))
+        {
+            PlayerPrefs.SetInt("Cash", 1000);
+        }
+        if (!PlayerPrefs.HasKey("CurrentLevel"))
+        {
+            PlayerPrefs.SetInt("CurrentLevel", 1);
+        }
+
         int currentLevel = GetCurrentLevel();
         levelText.text = "LEVEL " + currentLevel;
         gameCashText.text = PlayerPrefs.GetInt("Cash").ToString();
@@ -236,6 +259,17 @@ public class GameManager : Singleton<GameManager>
     {
         doubleDamagePanel.SetActive(false);
     }
+
+    public void ActivateHookLayer()
+    {
+        for(int i = 0; i < 5 && inactiveHookContainers.Count>0; i++)
+        {
+            HookContainer hookContainer = inactiveHookContainers[0];
+            hookContainer.gameObject.SetActive(true);
+            hookContainers.Add(hookContainer);
+            inactiveHookContainers.RemoveAt(0);
+        }
+    }
     #endregion
 
 
@@ -247,20 +281,74 @@ public class GameManager : Singleton<GameManager>
         //{
         if (hookContainers.Count > 0 && activeHooks.Count < hookContainers.Count)
         {
-            HookContainer hookContainer = GetRandomHookContainer();
-            HookBase hookBase = Instantiate(hooks[0], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
-            hookBase.transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
-            hookBase.thisHookContainer = hookContainer;
-            hookContainer.isOccupied = true;
-            hookContainer.ActivateDeactivateLevelText(true);
-            hookBase.SetHookControllerLevel(HookLevel.ONE);
-            hookContainer.levelText.text = "" + ((int)hookBase.hookLevel);
-            activeHooks.Add(hookBase);
-            DeductCoins(50);
-            hookControllers.Add(hookBase.hookController);
-            FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
+            int i = GetCurrentLevel() - offsetForHookLevelToinstantiate;
+            int spawnIndex;
+            if (i <= 2)
+            {
+                spawnIndex = 0;
+            }
+            else
+            {
+                spawnIndex = i;
+            }
+            int requiredCoins = spawnIndex * 50;
+            if (spawnIndex <= 0)
+            {
+                requiredCoins = 50;
+            }
+            if (GetCash() >= requiredCoins)
+            {
+                HookContainer hookContainer = GetRandomHookContainer();
+                HookBase hookBase = Instantiate(hooks[spawnIndex], hookContainer.transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity, hookContainer.transform);
+                hookBase.transform.DOPunchScale(new Vector3(.6f, .6f, .6f), .2f, 10, 1).SetEase(Ease.InOutBounce);
+                hookBase.thisHookContainer = hookContainer;
+                hookContainer.isOccupied = true;
+                hookContainer.ActivateDeactivateLevelText(true);
+                HookLevel levelToset = GetHookLevelToSet(spawnIndex);
+                hookBase.SetHookControllerLevel(levelToset);
+                hookContainer.levelText.text = "" + ((int)hookBase.hookLevel);
+                activeHooks.Add(hookBase);
+                DeductCoins(requiredCoins);
+                hookControllers.Add(hookBase.hookController);
+                FollowCamera.Instance.hooks.Add(hookBase.hookController.transform);
+            }
+            else
+            {
+                UIController.Instance.ShowDontHaveEnoughCoinsPopUp();
+            }
         }
         //}
+    }
+
+    HookLevel GetHookLevelToSet(int spawnIndex)
+    {
+        switch (spawnIndex)
+        {
+            case 0:
+                return HookLevel.ONE;
+            case 1:
+                return HookLevel.TWO;
+            case 2:
+                return HookLevel.THREE;
+            case 3:
+                return HookLevel.FOUR;
+            case 4:
+                return HookLevel.FIVE;
+            case 5:
+                return HookLevel.SIX;
+            case 6:
+                return HookLevel.SEVEN;
+            case 7:
+                return HookLevel.EIGHT;
+            case 8:
+                return HookLevel.NINE;
+            case 9:
+                return HookLevel.TEN;
+            case 10:
+                return HookLevel.ELEVEN;
+            default:
+                return HookLevel.None;
+        }
     }
 
     //return random Hook Container to spawn the hooks on it

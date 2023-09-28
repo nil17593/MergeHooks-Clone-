@@ -16,7 +16,7 @@ public class UIController : Singleton<UIController>
     public GameObject sellHookPanel;
 
     [SerializeField] private RectTransform levelClearPanel;
-
+    [SerializeField] private RectTransform dontHaveEnoughCoinsPanel;
 
 
     public void ShowLevelClearPopup()
@@ -25,6 +25,14 @@ public class UIController : Singleton<UIController>
         //{
             //levelClearPanel.DOAnchorPos(new Vector2(-2000, 0), 0.5f).SetDelay(1);
         //});
+    }
+
+    public void ShowDontHaveEnoughCoinsPopUp()
+    {
+        dontHaveEnoughCoinsPanel.DOAnchorPos(Vector2.zero, .5f).SetEase(Ease.InOutElastic).OnComplete(() =>
+        {
+            dontHaveEnoughCoinsPanel.DOAnchorPos(new Vector2(-2000, 0), 0.5f).SetDelay(1);
+        });
     }
     public void ActivateSellHookPanel()
     {

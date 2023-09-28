@@ -63,6 +63,13 @@ public class CarSpawner : Singleton<CarSpawner>
 
     void SpawnCars()
     {
+        if (GameManager.Instance.inactiveHookContainers.Count > 0)
+        {
+            if (GameManager.Instance.GetCurrentLevel() >= 3)
+            {
+                GameManager.Instance.ActivateHookLayer();
+            }
+        }
         maxZSizeInColumn = new float[numColumns];
         float currentX = startingPoint.position.x;
         float currentZ = startingPoint.position.z;
