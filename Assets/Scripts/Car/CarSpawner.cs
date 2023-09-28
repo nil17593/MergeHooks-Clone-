@@ -181,7 +181,7 @@ public class CarSpawner : Singleton<CarSpawner>
                     if (randomPercentage > carRandomSpawningRate)
                     {
                         int prefabIndex = UnityEngine.Random.Range(0, carPrefabs.Count);
-                        Vector3 spawnPosition = new Vector3(currentX, 0.5f, currentZ);
+                        Vector3 spawnPosition = new Vector3(currentX, y, currentZ);
                         if (row == 0)
                         {
                             CarController car = Instantiate(carPrefabs[0], spawnPosition, Quaternion.identity);
