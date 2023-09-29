@@ -22,6 +22,7 @@ public class GameManager : Singleton<GameManager>
     public List<HookContainer> inactiveHookContainers = new List<HookContainer>();
     public GameObject buttonPanel;
     public int offsetForHookLevelToinstantiate;
+    public List<int> costOfHooks = new List<int>();
     #endregion
 
     #region Public booleans
@@ -166,6 +167,13 @@ public class GameManager : Singleton<GameManager>
         AdManager.Instance.ShowRewarded(CrazyAdType.hookrewarded);
     }
 
+    public void OnGetSpinRewardButtonPressed()
+    {
+        UIController.Instance.ResetShowLevelClearPopup();
+        AdManager.Instance.ShowRewarded(CrazyAdType.spinWheelRewarded);
+        CarSpawner.Instance.SpawnNewCars();
+    }
+
     public void OnContinueWithoutSpinButtonPressed()
     {
         UIController.Instance.ResetShowLevelClearPopup();
@@ -189,6 +197,16 @@ public class GameManager : Singleton<GameManager>
     {
         int cash = PlayerPrefs.GetInt("Cash");
         int currentAmount = GetComponent<EnableDisableGameObject>().currentAmount;
+        cash += currentAmount;
+        PlayerPrefs.SetInt("Cash", cash);
+        PlayerPrefs.Save();
+        gameCashText.text = cash.ToString();
+    }
+
+    public void AddSpinWheelRewardedCash()
+    {
+        int cash = PlayerPrefs.GetInt("Cash");
+        int currentAmount = UIController.Instance.GetCurrentSpinWheelRewardAmount();
         cash += currentAmount;
         PlayerPrefs.SetInt("Cash", cash);
         PlayerPrefs.Save();
@@ -292,11 +310,8 @@ public class GameManager : Singleton<GameManager>
                 spawnIndex = i - 1;
             }
 
-            int requiredCoins = spawnIndex * 50;
-            if (spawnIndex <= 0)
-            {
-                requiredCoins = 50;
-            }
+            int requiredCoins = costOfHooks[spawnIndex];
+           
             if (GetCash() >= requiredCoins)
             {
                 HookContainer hookContainer = GetRandomHookContainer();

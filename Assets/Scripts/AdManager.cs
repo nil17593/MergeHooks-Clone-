@@ -28,6 +28,10 @@ public class AdManager : Singleton<AdManager>
                 GameManager.Instance.GetDoubleDamageReward();
                 break;
 
+            case CrazyAdType.spinWheelRewarded:
+                GameManager.Instance.AddSpinWheelRewardedCash();
+                break;
+
         }
     }
 }

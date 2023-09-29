@@ -251,6 +251,7 @@ public class CarSpawner : Singleton<CarSpawner>
             SpawnCars();
             GameManager.Instance.presentGameState = GameManager.GameState.Merging;
         }
+        UIController.Instance.ResetSpinWheelReward();
     }
 
     int CalculateNumberOfCarsToSpawn(int gridSize, int randomPercentage)

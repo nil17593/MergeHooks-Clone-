@@ -15,16 +15,27 @@ public class UIController : Singleton<UIController>
     public RectTransform coin;
     public GameObject sellHookPanel;
 
-    [SerializeField] private RectTransform levelClearPanel;
+    [SerializeField] private GameObject levelClearPanel;
+    [SerializeField] private GameObject getOrLeaveRewardPanel;
     [SerializeField] private RectTransform dontHaveEnoughCoinsPanel;
-
+    [SerializeField] private PickerWheel pickerWheel;
+    private int currentSpinWheelRewardAmount;
 
     public void ShowLevelClearPopup()
     {
-        levelClearPanel.DOAnchorPos(Vector2.zero, .5f).SetEase(Ease.InOutElastic);//.OnComplete(() =>
-        //{
-            //levelClearPanel.DOAnchorPos(new Vector2(-2000, 0), 0.5f).SetDelay(1);
-        //});
+        levelClearPanel.SetActive(true);
+        pickerWheel.OnSpinStart(() =>
+            {
+            });
+
+        pickerWheel.OnSpinEnd(wheelPiece =>
+        {
+            Debug.Log("Lable" + wheelPiece.Label + " , amount:" + wheelPiece.Amount);
+            currentSpinWheelRewardAmount = wheelPiece.Amount;
+            levelClearPanel.SetActive(false);
+            getOrLeaveRewardPanel.SetActive(true);
+        });
+        pickerWheel.Spin();
     }
 
     public void ShowDontHaveEnoughCoinsPopUp()
@@ -41,12 +52,22 @@ public class UIController : Singleton<UIController>
 
     public void ResetShowLevelClearPopup()
     {
-        levelClearPanel.DOAnchorPos(new Vector2(-2000,0), .5f).SetEase(Ease.InOutElastic);
+        getOrLeaveRewardPanel.SetActive(false);
+    }
+
+    public void ResetSpinWheelReward()
+    {
+        currentSpinWheelRewardAmount = 0;
     }
 
     public void DeactivateHookPanel()
     {
         sellHookPanel.SetActive(false);
+    }
+
+    public int GetCurrentSpinWheelRewardAmount()
+    {
+        return currentSpinWheelRewardAmount;
     }
 }
 
