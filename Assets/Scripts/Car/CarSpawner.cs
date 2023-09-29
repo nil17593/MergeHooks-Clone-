@@ -90,7 +90,7 @@ public class CarSpawner : Singleton<CarSpawner>
                         {
                             if (row == 0)
                             {
-                                CarController car = Instantiate(carPrefabs[0], spawnPosition, Quaternion.identity);
+                                CarController car = Instantiate(carPrefabs[0], spawnPosition, carPrefabs[0].transform.rotation);
                                 float zSize = GetZSizeOfObject(car);
                                 maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
                                 carsOnGrid.Add(car);
@@ -101,7 +101,7 @@ public class CarSpawner : Singleton<CarSpawner>
                             }
                             else
                             {
-                                CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                                CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, carPrefabs[prefabIndex].transform.rotation);
                                 float zSize = GetZSizeOfObject(car);
                                 maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
                                 carsOnGrid.Add(car);
@@ -191,7 +191,7 @@ public class CarSpawner : Singleton<CarSpawner>
                         Vector3 spawnPosition = new Vector3(currentX, y, currentZ);
                         if (row == 0)
                         {
-                            CarController car = Instantiate(carPrefabs[0], spawnPosition, Quaternion.identity);
+                            CarController car = Instantiate(carPrefabs[0], spawnPosition, carPrefabs[0].transform.rotation);
                             float zSize = GetZSizeOfObject(car);
                             maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
                             carsOnGrid.Add(car);
@@ -202,7 +202,7 @@ public class CarSpawner : Singleton<CarSpawner>
                         }
                         else
                         {
-                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, Quaternion.identity);
+                            CarController car = Instantiate(carPrefabs[prefabIndex], spawnPosition, carPrefabs[prefabIndex].transform.rotation);
                             float zSize = GetZSizeOfObject(car);
                             maxZSizeInColumn[col] = Mathf.Max(zSize, maxZSizeInColumn[col]);
                             carsOnGrid.Add(car);

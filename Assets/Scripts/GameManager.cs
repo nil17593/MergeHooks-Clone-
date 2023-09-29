@@ -289,8 +289,9 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                spawnIndex = i;
+                spawnIndex = i - 1;
             }
+
             int requiredCoins = spawnIndex * 50;
             if (spawnIndex <= 0)
             {

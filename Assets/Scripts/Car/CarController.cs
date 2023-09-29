@@ -10,6 +10,8 @@ public class CarController : MonoBehaviour, IDamagable
     private int row, column;
     private Camera cam;
     bool isreachedToShrederArea = false;
+    [SerializeField] private int coinsToGivePlayer;
+
     private void Awake()
     {
         collider = GetComponent<BoxCollider>();
@@ -59,12 +61,15 @@ public class CarController : MonoBehaviour, IDamagable
                 CarSpawner.Instance.carsOnGrid.Remove(this);
             }
             isreachedToShrederArea = true;
-            transform.DORotate(new Vector3(-90, 0, 0), 1.5f).OnComplete(() =>
+            Quaternion targetRotation = transform.rotation * Quaternion.Euler(90, 0, 0);
+
+            // Use DOTween to rotate the transform
+            transform.DORotate(targetRotation.eulerAngles, 1.5f).OnComplete(() =>
             {
                 Vector3 pos = cam.WorldToScreenPoint(transform.position);
                 GameObject cash = Instantiate(UIController.Instance.cashPrefab, pos, UIController.Instance.cashPrefab.transform.rotation, UIController.Instance.targetForCash.transform);
 
-                cash.GetComponent<CashAnimation>().MoveCoin(5);
+                cash.GetComponent<CashAnimation>().MoveCoin(coinsToGivePlayer);
                 transform.DOMoveY(-0.50f, .2f).OnComplete(() =>
                 {
 
@@ -98,7 +103,7 @@ public class CarController : MonoBehaviour, IDamagable
 
     public void PullCar()
     {
-        transform.Translate(Vector3.back * 10f * Time.deltaTime);
+        transform.Translate(Vector3.forward * 10f * Time.deltaTime);
     }
 }
 

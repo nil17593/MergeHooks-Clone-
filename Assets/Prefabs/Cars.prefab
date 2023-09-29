@@ -111,6 +111,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 457822, guid: a6c13eb6167cda24e872fa39d6369132, type: 3}
   m_PrefabInstance: {fileID: 2626865454767920841}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2626865454767805197 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 116164, guid: a6c13eb6167cda24e872fa39d6369132, type: 3}
+  m_PrefabInstance: {fileID: 2626865454767920841}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &359903787
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865454767805197}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8194695, y: 2.1653538, z: 3.1306586}
+  m_Center: {x: 0.0000019073486, y: 1.29706, z: 1.7922733}
+--- !u!114 &359903788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865454767805197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51117b3c9e10fc544952fa48b80b4e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 20
+  canPull: 0
+  coinsToGivePlayer: 5
 --- !u!1001 &2626865455169645631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,6 +217,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9618023250304d499042a60b61566e0, type: 3}
+--- !u!1 &2626865455169793465 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 147846, guid: c9618023250304d499042a60b61566e0, type: 3}
+  m_PrefabInstance: {fileID: 2626865455169645631}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1556834309
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865455169793465}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8194695, y: 2.1653538, z: 3.035509}
+  m_Center: {x: 0.0000019073486, y: 1.29706, z: 2.5862703}
+--- !u!114 &1556834310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865455169793465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51117b3c9e10fc544952fa48b80b4e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 80
+  canPull: 0
+  coinsToGivePlayer: 20
 --- !u!4 &2626865455169988029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 477570, guid: c9618023250304d499042a60b61566e0, type: 3}
@@ -262,6 +328,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab8515495709bd5418189836d55509b3, type: 3}
+--- !u!1 &2626865455558710908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 119332, guid: ab8515495709bd5418189836d55509b3, type: 3}
+  m_PrefabInstance: {fileID: 2626865455558788184}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1593695523
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865455558710908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8194695, y: 2.1653538, z: 3.2855415}
+  m_Center: {x: 0.0000019073486, y: 1.29706, z: 2.2118182}
+--- !u!114 &1593695524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865455558710908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51117b3c9e10fc544952fa48b80b4e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 60
+  canPull: 0
+  coinsToGivePlayer: 15
 --- !u!4 &2626865455558890654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 430278, guid: ab8515495709bd5418189836d55509b3, type: 3}
@@ -340,6 +439,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bdbd6ed29100d04da370b3d67d3cd47, type: 3}
+--- !u!1 &2626865455867982622 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 198770, guid: 8bdbd6ed29100d04da370b3d67d3cd47, type: 3}
+  m_PrefabInstance: {fileID: 2626865455868050284}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1518932597
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865455867982622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8194695, y: 5.403863, z: 4.363743}
+  m_Center: {x: 0.0000019073486, y: 2.9163146, z: 2.4088154}
+--- !u!114 &1518932598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865455867982622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51117b3c9e10fc544952fa48b80b4e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  canPull: 0
+  coinsToGivePlayer: 25
 --- !u!4 &2626865455868243464 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 464228, guid: 8bdbd6ed29100d04da370b3d67d3cd47, type: 3}
@@ -418,6 +550,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64a4356ec89062643bc759f76e3d9e86, type: 3}
+--- !u!1 &2626865456045312655 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 187596, guid: 64a4356ec89062643bc759f76e3d9e86, type: 3}
+  m_PrefabInstance: {fileID: 2626865456045200963}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &359903790
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865456045312655}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8194695, y: 2.1653538, z: 3.4848251}
+  m_Center: {x: 0.0000019073486, y: 1.29706, z: 2.4286258}
+--- !u!114 &359903791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865456045312655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51117b3c9e10fc544952fa48b80b4e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 40
+  canPull: 0
+  coinsToGivePlayer: 10
 --- !u!4 &2626865456045537969 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 470258, guid: 64a4356ec89062643bc759f76e3d9e86, type: 3}
@@ -501,3 +666,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 416148, guid: 17088e785c711504fba04edf0fdd0dad, type: 3}
   m_PrefabInstance: {fileID: 2626865456333197000}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2626865456333364162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 169226, guid: 17088e785c711504fba04edf0fdd0dad, type: 3}
+  m_PrefabInstance: {fileID: 2626865456333197000}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1922499570
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865456333364162}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.8194695, y: 2.1653538, z: 2.8036017}
+  m_Center: {x: 0.0000019073486, y: 1.29706, z: 2.4073043}
+--- !u!114 &1922499571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626865456333364162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51117b3c9e10fc544952fa48b80b4e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 120
+  canPull: 0
+  coinsToGivePlayer: 30

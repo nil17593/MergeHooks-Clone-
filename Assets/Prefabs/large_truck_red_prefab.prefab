@@ -284,6 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   canPull: 0
+  coinsToGivePlayer: 0
 --- !u!1 &6285668662337400168
 GameObject:
   m_ObjectHideFlags: 0
